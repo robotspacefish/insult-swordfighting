@@ -1,0 +1,5 @@
+#pirate-pictures {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+}

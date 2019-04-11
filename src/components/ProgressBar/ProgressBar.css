@@ -1,0 +1,26 @@
+#progress-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  align-items: flex-end;
+}
+
+#progress-bar img {
+  display: block;
+}
+
+.tick-pirate {
+  margin: 0 5px;
+}
+
+.tick {
+  height: 10px;
+  width: 1px;
+  background-color: white;
+  margin: 0 15px;
+}
+
+.passed {
+  background: yellow;
+/*   height: 18px; */
+}
