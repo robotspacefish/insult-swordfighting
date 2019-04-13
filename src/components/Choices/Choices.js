@@ -1,17 +1,12 @@
 import React from 'react';
 import './Choices.css';
-// import Button from '../Button/Button';
 
-const Choices = ({ knownInsults }) => {
+const Choices = ({ choices, handleSelected }) => {
   return (
     <div id="player-choices">
       {
         // TODO button text should be insult or comeback
-        knownInsults.map(insult => {
-          if (insult.hasOwnProperty('insult')) {
-            return <button><div className="hovered-choice"></div>{insult.insult}</button>
-          }
-        })
+        choices.map(choice => <button onClick={() => handleSelected(choice)}><div className="hovered-choice"></div>{choice}</button>)
       }
     </div>
   )

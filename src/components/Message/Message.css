@@ -3,6 +3,7 @@
   text-align: center;
   padding: 10px 0 20px;
   border-bottom: 1px solid white;
+  min-height: 100px;
 }
 
 #speaker-name {
