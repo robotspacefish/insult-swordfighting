@@ -30,3 +30,8 @@ button {
   padding: 5px 7px;
   font-weight: bold;
 }
+
+@keyframes fadeout {
+  from { opacity : 1; }
+  to { opacity : 0; }
+}
