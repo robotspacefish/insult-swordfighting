@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Title from '../Title/Title';
 // import Instructions from '../Instructions/Instructions';
 // import Images from '../Images/Images';
 // import Messages from '../Messages/Messages';
@@ -14,7 +15,7 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: "init",
+      mode: 'title',
       knownInsults: Object.assign({}, this.props.knownInsults),
       choices: [...this.props.knownInsults.insults],
       currentChoice: '',
@@ -24,9 +25,12 @@ export default class Game extends Component {
         pirateMsg: 'pirateMsg'
       }
     }
+    this.setMode = this.setMode.bind(this);
   }
 
-  handleChangeMode = (mode) => this.setState({ mode });
+  setMode(mode) {
+    this.setState({ mode })
+  }
 
   initPlayerChoices = (turnType = this.state.turnType) => {
     let choices = turnType === 'insult' ? [...this.props.knownInsults.insults] : [...this.props.knownInsults.comebacks];
@@ -48,6 +52,10 @@ export default class Game extends Component {
 
   updatePlayerChoices = () => { }
 
+  renderMode() {
+    let mode = this.state.mode;
+    if (mode === 'title') return <Title setMode={this.setMode} />;
+  }
   render() {
     let mode = this.state.mode;
     return (
@@ -58,8 +66,8 @@ export default class Game extends Component {
             this.initPlayerChoices();
           }}>[Debug] Toggle Turn Type</button>
 
-          <button onClick={() => this.handleChangeMode('game')}>[Debug] Game Mode</button>
-          <button onClick={() => this.handleChangeMode('instructions')}>[Debug] Instructions Mode</button>
+          <button onClick={() => this.setMode('game')}>[Debug] Game Mode</button>
+          <button onClick={() => this.setMode('instructions')}>[Debug] Instructions Mode</button>
         </div> */}
 
         {/* {mode === 'init' &&
@@ -69,8 +77,7 @@ export default class Game extends Component {
             txt={this.state.txt}
           /> */}
         } */}
-        <canvas ref="canvas" width={800} height="400"> </canvas>
-        <ProgressBar />
+        {this.renderMode()}
       </div>
     )
   }
