@@ -1,11 +1,16 @@
-#progress-bar {
+#ProgressBar {
+  margin-top: 40px;
+}
+
+#ProgressBar-bar {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin: 0 auto;
+  max-width: 900px;
   align-items: flex-end;
 }
 
-#progress-bar img {
+#ProgressBar img {
   display: block;
 }
 
