@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Title from '../Title/Title';
 import TurnStart from '../TurnStart/TurnStart';
+import Greet from '../Greet/Greet';
 // import Instructions from '../Instructions/Instructions';
 // import Images from '../Images/Images';
 // import Messages from '../Messages/Messages';
@@ -57,6 +58,7 @@ export default class Game extends Component {
     let mode = this.state.mode;
     if (mode === 'title') return <Title setMode={this.setMode} />;
     else if (mode === 'turnStart') return <TurnStart setMode={this.setMode} turn={this.state.turn} />;
+    else if (mode === 'greet') return <Greet setMode={this.setMode} />;
   }
   render() {
     let mode = this.state.mode;
