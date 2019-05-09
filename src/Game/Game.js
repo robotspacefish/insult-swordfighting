@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Title from '../Title/Title';
+import TurnStart from '../TurnStart/TurnStart';
 // import Instructions from '../Instructions/Instructions';
 // import Images from '../Images/Images';
 // import Messages from '../Messages/Messages';
@@ -19,7 +20,7 @@ export default class Game extends Component {
       knownInsults: Object.assign({}, this.props.knownInsults),
       choices: [...this.props.knownInsults.insults],
       currentChoice: '',
-      turnType: '',
+      turn: 'player',
       txt: {
         playerMsg: 'playerMsg',
         pirateMsg: 'pirateMsg'
@@ -55,6 +56,7 @@ export default class Game extends Component {
   renderMode() {
     let mode = this.state.mode;
     if (mode === 'title') return <Title setMode={this.setMode} />;
+    else if (mode === 'turnStart') return <TurnStart setMode={this.setMode} turn={this.state.turn} />;
   }
   render() {
     let mode = this.state.mode;
