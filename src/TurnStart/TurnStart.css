@@ -1,0 +1,14 @@
+.TurnStart {
+  display: flex;
+  justify-content: center;
+  /* align-items: center;s */
+}
+
+.TurnStart h1 {
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+  font-size: 5rem;
+  margin-top: 200px;
+  animation: fadeout 4s;
+}
