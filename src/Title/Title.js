@@ -12,7 +12,7 @@ export default class Title extends Component {
     let title = document.getElementsByClassName('Title')[0];
     title.style.animation = 'fadeout 2500ms'
     setTimeout(() => {
-      this.props.setMode(this.props.modeToSet);
+      this.props.updateMode(this.props.modeToSet);
     }, 2000);
   }
 
