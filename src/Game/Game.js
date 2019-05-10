@@ -3,12 +3,10 @@ import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import TurnStart from '../TurnStart/TurnStart';
 import Greet from '../Greet/Greet';
-// import Instructions from '../Instructions/Instructions';
-// import Images from '../Images/Images';
-// import Messages from '../Messages/Messages';
-// import Choices from '../Choices/Choices';
-import ProgressBar from '../ProgressBar/ProgressBar';
-// import Scroll from '../Scroll/Scroll';
+import Fight from '../Fight/Fight';
+// import ProgressBar from '../ProgressBar/ProgressBar';
+import './Game.css';
+
 import knownInsults from '../assets/knownInsults.js';
 
 export default class Game extends Component {
@@ -23,23 +21,27 @@ export default class Game extends Component {
       choices: [...this.props.knownInsults.insults], // starts as insults
       currentChoice: '',
       turn: 'player',
-      turnType : '',
+      turnType : 'insult',
       txt: {
         playerMsg: 'playerMsg',
         pirateMsg: 'pirateMsg'
       },
       showInstructions : false
     }
-    this.setMode = this.setMode.bind(this);
+    this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
   }
 
-  setMode(mode) {
+  updateMode(mode) {
     this.setState({ mode })
   }
 
-  initPlayerChoices = (turnType = this.state.turnType) => {
-    let choices = turnType === 'insult' ? [...this.props.knownInsults.insults] : [...this.props.knownInsults.comebacks];
+  updateTurnType(turnType) {
+    this.setState({ turnType });
+  }
+
+  updatePlayerChoices() {
+    let choices = this.state.turnType === 'insult' ? [...this.props.knownInsults.insults] : [...this.props.knownInsults.comebacks];
     this.setState({ choices })
   }
 
@@ -56,13 +58,19 @@ export default class Game extends Component {
     this.setState(() => ({ turnType }));
   }
 
-  updatePlayerChoices = () => { }
-
   renderMode() {
     let mode = this.state.mode;
-    if (mode === 'title') return <Title setMode={this.setMode} />;
-    else if (mode === 'turnStart') return <TurnStart setMode={this.setMode} turn={this.state.turn} />;
-    else if (mode === 'greet') return <Greet setMode={this.setMode} />;
+    if (mode === 'title') return <Title updateMode={this.updateMode} />;
+    else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
+    else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
+    else if (mode === 'fight') {
+      return <Fight updateMode={this.updateMode}
+                    txt={this.state.txt}
+                    choices={this.state.choices}
+             />
+    };
+  }
+
   handleShowInstructions(evt) {
     let instructions = document.getElementsByClassName('Instructions')[0];
     if (this.state.showInstructions) {
@@ -74,25 +82,16 @@ export default class Game extends Component {
     }, 300);
   }
   render() {
-
     return (
       <div className="Game container">
-        {/* <div className="debug">
-          <button onClick={() => {
-            this.toggleTurnType();
-            this.initPlayerChoices();
-          }}>[Debug] Toggle Turn Type</button>
 
-          <button onClick={() => this.setMode('game')}>[Debug] Game Mode</button>
-          <button onClick={() => this.setMode('instructions')}>[Debug] Instructions Mode</button>
+        {/* <div className="debug">
+          <span style={{paddingTop: '2px'}}>[ Debug ]</span>
+          <button onClick={() => this.updateMode('title')}>Title Mode</button>
+          <button onClick={() => this.updateMode('turnStart')}>TurnStart Mode</button>
+          <button onClick={() => this.updateMode('fight')}>Fight Mode</button>
         </div> */}
 
-        {/* {mode === 'init' &&
-          {/* <Game
-            choices={this.state.choices}
-            handleSelected={this.handleSelected}
-            txt={this.state.txt}
-          /> */}
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>
           {this.state.showInstructions ? 'Hide' : 'Show'} Instructions

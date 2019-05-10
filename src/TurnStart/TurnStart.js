@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import './TurnStart.css';
 
 export default class TurnStart extends Component {
-  static defaultProps = { modeToSet : 'greet'};
+  static defaultProps = { modeToSet : 'fight'};
 
   componentDidMount() {
     this.timeoutId = setTimeout(() => {
-      this.props.setMode(this.props.modeToSet);
+      this.props.updateMode(this.props.modeToSet);
     }, 3000);
   }
   componentWillUnmount() {
