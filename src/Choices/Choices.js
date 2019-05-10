@@ -5,11 +5,18 @@ import './Choices.css';
 export default class Choices extends Component {
   constructor(props) {
     super(props);
-    this.updateChoiceSelection = this.updateChoiceSelection.bind(this);
+    this.state = { isChoiceMade: false };
+    this.makeChoice = this.makeChoice.bind(this);
   }
 
-  updateChoiceSelection(choice) {
-    this.props.updateTurn(choice);
+  makeChoice(choice) {
+    this.setState({ isChoiceMade: true }, () => {
+      this.props.updateTurn(choice);
+      // re-enable button click after a delay
+      setTimeout(() => {
+        this.setState({ isChoiceMade: false });
+      }, 500);
+    });
   }
 
   render() {
@@ -19,7 +26,8 @@ export default class Choices extends Component {
           this.props.choices.map(c => (<Choice
                                           choice={c}
                                           key={c}
-                                          updateChoiceSelection={this.updateChoiceSelection}
+                                          makeChoice={this.makeChoice}
+                                          isChoiceMade={this.state.isChoiceMade}
                                       />))
         }
       </div>
