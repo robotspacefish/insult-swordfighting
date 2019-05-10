@@ -8,8 +8,6 @@ export default class Choice extends Component {
 
   handleClick() {
     this.props.updateChoiceSelection(this.props.choice);
-    this.props.updateTurnType();
-    this.props.updateTurn();
   }
   render() {
     return (
