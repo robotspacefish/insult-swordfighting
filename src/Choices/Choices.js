@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react'
+import Choice from '../Choice/Choice';
 import './Choices.css';
 
-const Choices = ({ choices, handleSelected }) => {
-  return (
-    <div id="player-choices">
-      {
-        // TODO button text should be insult or comeback
-        choices.map(choice => <button onClick={() => handleSelected(choice)}><div className="hovered-choice"></div>{choice}</button>)
-      }
-    </div>
-  )
-}
+export default class Choices extends Component {
+  constructor(props) {
+    super(props);
+    this.updateChoiceSelection = this.updateChoiceSelection.bind(this);
+  }
 
-export default Choices;
+  updateChoiceSelection(choice) {
+    this.props.updateTurn(choice);
+  }
+
+  render() {
+    return (
+      <div id="player-choices" className="Choices container">
+        {
+          this.props.choices.map(c => (<Choice
+                                          choice={c}
+                                          key={c}
+                                          updateChoiceSelection={this.updateChoiceSelection}
+                                      />))
+        }
+      </div>
+    )
+  }
+}

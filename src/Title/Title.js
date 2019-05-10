@@ -12,7 +12,7 @@ export default class Title extends Component {
     let title = document.getElementsByClassName('Title')[0];
     title.style.animation = 'fadeout 2500ms'
     setTimeout(() => {
-      this.props.setMode(this.props.modeToSet);
+      this.props.updateMode(this.props.modeToSet);
     }, 2000);
   }
 
@@ -22,7 +22,7 @@ export default class Title extends Component {
         <h1>Insult <span>Swordfighting</span></h1>
         <h2>Maecenas sed diam eget risus varius blandit sit amet non magna. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</h2>
         <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas faucibus mollis interdum.</p>
-        <button className="Title-start-btn" onClick={this.handleClick}>Begin!</button>
+        <button className="Title-start-btn btn" onClick={this.handleClick}>Begin!</button>
       </div>
     )
   }
