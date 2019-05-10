@@ -13,7 +13,8 @@ export default class Game extends Component {
     super(props);
     this.state = {
       mode: 'title',
-      showInstructions : false
+      showInstructions : false,
+      turn: 'player'
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);

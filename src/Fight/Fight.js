@@ -14,7 +14,6 @@ export default class Fight extends Component {
       allInsults: allInsults,
       choices: [...knownInsults.insults], // starts as insults
       currentChoice: '',
-      turn: 'player',
       turnType: 'insult',
       txt: {
         playerMsg: 'playerMsg',
