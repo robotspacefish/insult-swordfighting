@@ -46,29 +46,16 @@ export default class Game extends Component {
   }
 
   //handles the chosen insult or comeback the user selected
-  handleSelected = (selected) => {
-    this.setState({
-      speaker: 'Player',
-      msg: selected
-    });
-  }
+  // handleSelected = (selected) => {
+  //   this.setState({
+  //     speaker: 'Player',
+  //     msg: selected
+  //   });
+  // }
 
   toggleTurnType = () => {
     let turnType = this.state.turnType === 'insult' ? 'comeback' : 'insult';
     this.setState(() => ({ turnType }));
-  }
-
-  renderMode() {
-    let mode = this.state.mode;
-    if (mode === 'title') return <Title updateMode={this.updateMode} />;
-    else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
-    else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
-    else if (mode === 'fight') {
-      return <Fight updateMode={this.updateMode}
-                    txt={this.state.txt}
-                    choices={this.state.choices}
-             />
-    };
   }
 
   handleShowInstructions(evt) {
@@ -80,6 +67,32 @@ export default class Game extends Component {
     setTimeout(() => {
       this.setState({ showInstructions: !this.state.showInstructions });
     }, 300);
+  }
+
+  playerTurn() {
+    // TODO player actions
+  }
+
+  pirateTurn() {
+    // TODO pirate actions
+    if (this.state.turnType === 'insult') {
+
+    } else {
+
+    }
+  }
+
+  renderMode() {
+    let mode = this.state.mode;
+    if (mode === 'title') return <Title updateMode={this.updateMode} />;
+    else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
+    else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
+    else if (mode === 'fight') {
+      return <Fight updateMode={this.updateMode}
+        txt={this.state.txt}
+        choices={this.state.choices}
+      />
+    };
   }
   render() {
     return (
