@@ -3,10 +3,24 @@ import Images from '../Images/Images';
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Scroll from '../Scroll/Scroll';
+import knownInsults from '../assets/knownInsults.js';
+import allInsults from '../assets/insults.js';
 
 export default class Fight extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      knownInsults: knownInsults,
+      allInsults: allInsults,
+      choices: [...knownInsults.insults], // starts as insults
+      currentChoice: '',
+      turn: 'player',
+      turnType: 'insult',
+      txt: {
+        playerMsg: 'playerMsg',
+        pirateMsg: 'pirateMsg'
+      },
+    };
     this.updateTurn = this.updateTurn.bind(this);
   }
 
@@ -21,11 +35,11 @@ export default class Fight extends Component {
       <div className="Fight container">
         <Images />
         <Messages
-           txt={this.props.txt}
+           txt={this.state.txt}
          />
          <Scroll>
           <Choices
-             choices={this.props.choices}
+             choices={this.state.choices}
              updateTurn={this.updateTurn}
           />
         </Scroll>

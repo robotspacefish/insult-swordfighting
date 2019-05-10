@@ -8,24 +8,11 @@ import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
 import './Game.css';
 
-import knownInsults from '../assets/knownInsults.js';
-import allInsults from '../assets/insults.js';
-
 export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
       mode: 'title',
-      knownInsults: knownInsults,
-      allInsults : allInsults,
-      choices: [...knownInsults.insults], // starts as insults
-      currentChoice: '',
-      turn: 'player',
-      turnType : 'insult',
-      txt: {
-        playerMsg: 'playerMsg',
-        pirateMsg: 'pirateMsg'
-      },
       showInstructions : false
     }
     this.updateMode = this.updateMode.bind(this);
@@ -89,8 +76,6 @@ export default class Game extends Component {
     else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
     else if (mode === 'fight') {
       return <Fight updateMode={this.updateMode}
-        txt={this.state.txt}
-        choices={this.state.choices}
       />
     };
   }
