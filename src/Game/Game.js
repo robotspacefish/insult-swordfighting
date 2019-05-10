@@ -4,6 +4,7 @@ import Title from '../Title/Title';
 import TurnStart from '../TurnStart/TurnStart';
 import Greet from '../Greet/Greet';
 import Fight from '../Fight/Fight';
+import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
 import './Game.css';
 
@@ -85,12 +86,7 @@ export default class Game extends Component {
     return (
       <div className="Game container">
 
-        {/* <div className="debug">
-          <span style={{paddingTop: '2px'}}>[ Debug ]</span>
-          <button onClick={() => this.updateMode('title')}>Title Mode</button>
-          <button onClick={() => this.updateMode('turnStart')}>TurnStart Mode</button>
-          <button onClick={() => this.updateMode('fight')}>Fight Mode</button>
-        </div> */}
+        <Debug  updateMode={this.updateMode} />
 
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>
