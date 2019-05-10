@@ -12,15 +12,13 @@ import knownInsults from '../assets/knownInsults.js';
 import allInsults from '../assets/insults.js';
 
 export default class Game extends Component {
-  static defaultProps = {
-    knownInsults : knownInsults
-  }
   constructor(props) {
     super(props);
     this.state = {
       mode: 'title',
-      knownInsults: Object.assign({}, this.props.knownInsults),
-      choices: [...this.props.knownInsults.insults], // starts as insults
+      knownInsults: knownInsults,
+      allInsults : allInsults,
+      choices: [...knownInsults.insults], // starts as insults
       currentChoice: '',
       turn: 'player',
       turnType : 'insult',
