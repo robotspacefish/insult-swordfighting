@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import TurnStart from '../TurnStart/TurnStart';
 import Greet from '../Greet/Greet';
@@ -19,15 +20,18 @@ export default class Game extends Component {
     this.state = {
       mode: 'title',
       knownInsults: Object.assign({}, this.props.knownInsults),
-      choices: [...this.props.knownInsults.insults],
+      choices: [...this.props.knownInsults.insults], // starts as insults
       currentChoice: '',
       turn: 'player',
+      turnType : '',
       txt: {
         playerMsg: 'playerMsg',
         pirateMsg: 'pirateMsg'
-      }
+      },
+      showInstructions : false
     }
     this.setMode = this.setMode.bind(this);
+    this.handleShowInstructions = this.handleShowInstructions.bind(this);
   }
 
   setMode(mode) {
@@ -59,11 +63,20 @@ export default class Game extends Component {
     if (mode === 'title') return <Title setMode={this.setMode} />;
     else if (mode === 'turnStart') return <TurnStart setMode={this.setMode} turn={this.state.turn} />;
     else if (mode === 'greet') return <Greet setMode={this.setMode} />;
+  handleShowInstructions(evt) {
+    let instructions = document.getElementsByClassName('Instructions')[0];
+    if (this.state.showInstructions) {
+      instructions.style.animation = 'pullup 1s'
+    }
+
+    setTimeout(() => {
+      this.setState({ showInstructions: !this.state.showInstructions });
+    }, 300);
   }
   render() {
-    let mode = this.state.mode;
+
     return (
-      <div className="Game">
+      <div className="Game container">
         {/* <div className="debug">
           <button onClick={() => {
             this.toggleTurnType();
@@ -80,21 +93,14 @@ export default class Game extends Component {
             handleSelected={this.handleSelected}
             txt={this.state.txt}
           /> */}
-        } */}
+        <button className="btn" id="Game-instructions-btn"
+          onClick={this.handleShowInstructions}>
+          {this.state.showInstructions ? 'Hide' : 'Show'} Instructions
+        </button>
+        {this.state.showInstructions && <Instructions />}
         {this.renderMode()}
       </div>
     )
   }
 }
 
-//  <Images />
-//         <Messages
-//           txt={txt}
-//         />
-//         <Scroll>
-//           <Choices
-//             choices={this.choices}
-//             handleSelected={this.handleSelected}
-//           />
-//         </Scroll>
-//

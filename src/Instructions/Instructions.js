@@ -3,7 +3,7 @@ import './Instructions.css';
 
 const Instructions = () => {
   return (
-    <div id="instructions">
+    <div className="Instructions container">
       <h2>About</h2>
       <p>Aenean lacinia bibendum nulla sed consectetur. Curabitur blandit tempus porttitor. Donec sed odio dui.</p>
       <h2>How to Play:</h2>
