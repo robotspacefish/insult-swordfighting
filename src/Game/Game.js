@@ -9,6 +9,7 @@ import Debug from '../Debug';
 import './Game.css';
 
 import knownInsults from '../assets/knownInsults.js';
+import allInsults from '../assets/insults.js';
 
 export default class Game extends Component {
   static defaultProps = {

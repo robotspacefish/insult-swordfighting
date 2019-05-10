@@ -1,4 +1,4 @@
-[
+const allInsults = [
   {
     "id" : "0",
     "insult" : "You fight like a Dairy Farmer!",
@@ -78,6 +78,7 @@
     "id": "15",
     "insult": "You have the manners of a beggar.",
     "comeback": "I wanted to make sure you'd feel comfortable with me."
-  },
+  }
+];
 
-]
+export default allInsults;
