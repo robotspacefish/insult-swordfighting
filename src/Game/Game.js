@@ -15,7 +15,8 @@ export default class Game extends Component {
     this.state = {
       mode: 'fight',
       showInstructions : false,
-      turn: 'player'
+      turn: 'player',
+      roundCounter : 1
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
@@ -34,7 +35,6 @@ export default class Game extends Component {
     let turn = this.state.turn === 'player'
     ? 'pirate' : 'player';
     this.setState({ turn });
-    // console.log(`updating ${this.state.turn} to ${turn}`)
   }
 
   handleShowInstructions(evt) {

@@ -16,7 +16,7 @@ export default class Choices extends Component {
         this.setState({ isChoiceMade: false });
       }, 500);
     });
-    this.props.updateTurnActions(choice);
+    this.props.updateRoundActions(choice);
   }
 
   render() {

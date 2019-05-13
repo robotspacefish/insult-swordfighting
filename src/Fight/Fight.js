@@ -10,100 +10,153 @@ export default class Fight extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      knownInsults: knownInsults,
-      allInsults: allInsults,
       choices: [...knownInsults.comebacks], // starts as comebacks
-      currentRoundInsultPool : [], // so pirate doesn't repeat insults
-      currentPirateChoice : allInsults[this.randomIndex(allInsults.length)],
-      currentPlayerChoice: '',
-      playerTurnType: 'comeback',
+      // currentPirateChoice : allInsults[this.randomIndex(allInsults.length)],
+      // currentPlayerChoice: '', // chosen from the btn options
+      // playerTurnType: 'comeback',
       playerMsg: '',
       pirateMsg: '',
-      winPrevExchange : null
     };
 
     this.updateRoundActions = this.updateRoundActions.bind(this);
+    this.winPrevExchange = null;
+    this.currentPirateRoundInsultPool = []; // so pirate doesn't repeat insults
+    this.currentPlayerMsg = '';
+    this.currentPirateMsg = '';
+    this.playerTurnType = 'comeback';
   }
 
   componentDidMount() {
     this.initRound();
   }
 
-  initRound() {
-    let pool = allInsults.map(i => i.insult);
-
-    // set a random insult
-    let insult = pool[this.randomIndex(pool.length)];
-
-    this.setState({
-      currentRoundInsultPool: pool.filter(i => i !== insult),
-      pirateMsg: insult
-    });
-  }
-
-  pirateTurn() {
-    if (this.state.playerTurnType === 'insult') {
-      // pirate comeback
-      let correctChance = Math.random();
-      let res = '';
-      // let comeback = allInsults.filter(i => i.insult === this.state.playerMsg);
-
-      // if (correctChance > 0.60) {
-      // return matching comeback
-      res = this.getCorrectResponse();
-      console.log(res)
-      // } else {
-        // return comeback not equal to correct response
-        // res = this.getIncorrectResponse().comeback;
-        // console.log('incorrect')
-      // }
-    } else { // pirate insult
-      const index = this.randomIndex(this.state.currentRoundInsultPool.length)
-      const insult = this.state.currentRoundInsultPool[index];
-      let pool = this.removeInsultFromPool(insult);
-      this.setState({
-        currentRoundInsultPool: pool,
-        playerTurnType: 'comeback',
-        pirateMsg: insult
-      })
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.playerMsg !== this.currentPlayerMsg) {
+      this.setState({ playerMsg : this.currentPlayerMsg});
     }
+    if (prevState.pirateMsg !== this.currentPirateMsg) {
+      this.setState({ pirateMsg: this.currentPirateMsg });
+    }
+
+    // console.log('prevState:',prevState)
   }
 
-  isMatch(choice) {
-    const playerTurnType = this.state.playerTurnType;
-    const notplayerTurnType = playerTurnType === 'insult' ? 'comeback' : 'insult';
+  componentWillUnmount() {
+    clearInterval(this.delayId);
+  }
+
+  delay(func, timeout = 1000) {
+    this.delayId = setTimeout(func, timeout);
+  }
+
+  /**
+   * @desc Start each round with a random pirate insult and put the remaining insults
+   * into a pool for the pirate to insult from the remainder of the round
+   */
+  initRound() {
+    // set first pirate insult
+    let pool = this.initPirateRoundInsultPool();
+    // set a random insult
+    this.pirateInsult(pool);
+    this.setState({ pirateMsg: this.currentPirateMsg })
+  }
+
+  /**
+   * @desc initialize each round's pool of insults for the pirate so they don't
+   * use repeat insults
+   */
+  initPirateRoundInsultPool() {
+    return allInsults.map(i => i.insult);
+  }
+
+  /**
+   * @desc Randomly select a pirate insult from the current round pool
+   */
+  pirateInsult(pool = this.currentPirateRoundInsultPool) {
+    const insult = pool[this.randomIndex(pool.length)];
+    this.currentPirateRoundInsultPool = pool.filter(i => i !== insult);
+    this.currentPirateMsg = insult;
+  }
+
+  pirateComeback() {
+    const correctChance = Math.random();
+    // if (correctChance > 0.60) {
+      // return matching comeback
+    this.currentPirateMsg = this.getCorrectResponse();
+    // } else {
+      // return comeback not equal to correct response
+      // this.currentPirateMsg = this.getIncorrectResponse().comeback;
+    // }
+  }
+
+  /**
+   * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
+   * @return {Number} matched.length
+   */
+  isMatch() {
+    const notplayerTurnType = this.playerTurnType === 'insult' ? 'comeback' : 'insult';
     const matched = allInsults.filter(i => {
-      return i[playerTurnType] === choice && i[notplayerTurnType] === this.state.pirateMsg;
+      return i[this.playerTurnType] === this.currentPlayerMsg && i[notplayerTurnType] === this.currentPirateMsg;
     });
 
     return matched.length > 0;
   }
 
+  playerActions(turnType) {
+    this.setPlayerChoices(turnType);
+    this.setPlayerTurnType(turnType);
+  }
+
+  pirateActions(turnType) {
+    if (turnType === 'insult') {
+      this.delay(() => this.pirateComeback());
+    } else {
+      if (this.isMatch()) {
+        this.delay(() => this.pirateInsult());
+      }
+    }
+  }
+
+  matchActions(turnType) {
+
+  }
+
+  /**
+   * @desc return the comeback that is paired with the player's chosen insult
+   * @return {String} res - the correct comeback
+   */
   getCorrectResponse() {
-    const res = allInsults.filter(i => {
-      console.log(`comparing ${i.insult} to ${this.state.playerMsg}`)
-      return i.insult === this.state.playerMsg
-    });
-    return res;
+    console.log('getting correct response')
+    const res = allInsults.filter(i => (
+      i.insult === this.currentPlayerMsg
+    ));
+    console.log(res[0].comeback)
+    return res[0].comeback;
+  }
+
+  checkForWinner() {
+    if (this.winPrevExchange === 'player') {
+      console.log('*** player wins round ***')
+    } else if (this.winPrevExchange === 'pirate') {
+      console.log('*** pirate wins round ***')
+    }
   }
 
   getIncorrectResponse() {
+    console.log('getting incorrect response')
     let res = '';
-    while (res !== this.state.playerMsg) {
-      const index = this.randomIndex[allInsults.length];
+    do {
+      const index = this.randomIndex(allInsults.length);
       res = allInsults[index];
-    }
+    } while (res.insult === this.currentPlayerMsg);
+
     return res;
   }
 
-  pirateInsult() {
-
-  }
-
   removeInsultFromPool(insultToRemove) {
-    this.setState( {currentRoundInsultPool : this.state.currentRoundInsultPool.filter(i => {
-      return i !== insultToRemove;
-    })});
+    this.currentPirateRoundInsultPool = this.currentPirateRoundInsultPool.filter(i => (
+      i !== insultToRemove
+    ));
   }
 
   randomIndex(len) {
@@ -217,15 +270,14 @@ export default class Fight extends Component {
   }
 
   updatePlayerChoices(turnType) {
-    const insults = Object.assign({}, this.state.knownInsults);
+    const insults = Object.assign({}, knownInsults);
     this.setState(st => ({
       choices : turnType === 'insult' ? [...insults.insults] : [...insults.comebacks]
     }))
   }
 
-  toggleplayerTurnType = () => {
-    let playerTurnType = this.state.playerTurnType === 'insult' ? 'comeback' : 'insult';
-    this.setState({ playerTurnType });
+  setPlayerTurnType(turnType) {
+    this.playerTurnType = turnType;
   }
 
   render() {
@@ -240,7 +292,7 @@ export default class Fight extends Component {
           <Choices
               choices={this.state.choices}
               updatePlayerTurn={this.props.updatePlayerTurn}
-              updateTurnActions={this.updateTurnActions}
+              updateRoundActions={this.updateRoundActions}
           />
         </Scroll>
       </div>
