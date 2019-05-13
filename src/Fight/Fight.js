@@ -22,7 +22,7 @@ export default class Fight extends Component {
       winPrevExchange : null
     };
 
-    this.updateTurnActions = this.updateTurnActions.bind(this);
+    this.updateRoundActions = this.updateRoundActions.bind(this);
   }
 
   componentDidMount() {
@@ -110,46 +110,98 @@ export default class Fight extends Component {
     return Math.floor(Math.random() * len);
   }
 
-  updateTurnActions(choice) {
-    // set the player's choice display
-    this.setState({ playerMsg : choice});
-    this.props.updatePlayerTurn(); // 'player' or 'pirate'
+  setPlayerMsg(msg) {
+    this.setState({ playerMsg: msg });
+  }
 
-    if (this.state.playerTurnType === 'insult') {
-      // pirate comeback
-      this.pirateTurn();
-      // check for match
-      // if (this.isMatch())
-    } else { // player comeback
-      console.log('player comeback match check')
-      // find player's choice in allInsults
-      // if comeback and insult are from same index it's correct
-      if (this.isMatch(choice)) {
-        console.log('match, player turn to insult')
-        this.endRound('insult', null);
+  updateRoundActions(choice) {
+    // set class property to use within functions since state doesn't update right away
+    let pirateAction = this.playerTurnType === 'insult'
+      ? this.pirateComeback.bind(this) : this.pirateInsult.bind(this);
 
-        this.playerTurn('insult') // For now, passing the turnType because it's not using the updated state
-        // TODO animation and turn start component
+    pirateAction();
+    let newTurnType = '';
+    this.currentPlayerMsg = choice;
+    if (this.isMatch()) {
+      newTurnType = 'comeback';
+      if (newTurnType === 'insult') {
+        console.log('match, no winner.\n player turn to insult')
       } else {
-        // pirate insults
-
-        console.log('wrong. pirate goes again')
-        // this.pirateTurn();
+        console.log('match, no winner.\n pirate turn to insult')
       }
+    } else {
+      newTurnType = 'insult';
     }
+
+    this.playerActions(newTurnType);
+
+
+    // this.setPlayerChoices('insult');
+    // if (this.playerTurnType === 'insult') {
+    //   this.delay(() => this.pirateComeback());
+    //   if (this.isMatch()) {
+    //     console.log('match, no winner\n pirate turn to insult')
+    //     this.winPrevExchange = null;
+    //     this.setPlayerComebacks();
+    //     this.setPlayerTurnType('comeback');
+
+    //     this.delay(() => this.pirateInsult());
+    //   } else {
+    //     console.log('player wins\n player insults again')
+    //     this.winPrevExchange = 'player';
+    //     this.setPlayerTurnType('insult');
+    //     this.setPlayerInsults();
+    //   }
+    // } else { // player comeback
+    //   if (this.isMatch()) { // success
+    //     console.log('match, no winner\n player turn to insult');
+
+    //     this.winPrevExchange = null;
+
+    //     this.setPlayerInsults();
+    //     this.setPlayerTurnType('insult');
+    //   } else { // failure
+    //     console.log('pirate wins.\n pirate insults again')
+    //     this.winPrevExchange = 'pirate';
+    //     this.setPlayerTurnType('comeback');
+    //     this.setPlayerComebacks();
+
+    //     this.delay(() => this.pirateInsult());
+    //   }
+    // }
+
+    // TODO if 2 rounds won by same person/computer
+    // this.endRound
+    // this.clearMsgs();
+
+  }
+
+  clearMsgs(msgType) {
+    this.setState({ [msgType]: '' });
+  }
+
+  setPlayerInsults() {
+    this.setState({ choices: [...knownInsults.insults] });
+  }
+
+  setPlayerComebacks() {
+    this.setState({ choices: [...knownInsults.comebacks] });
+  }
+
+  setPlayerChoices(turnType) {
+    let type = `${turnType}s`;
+
+    // this.setState({ choices: [...knownInsults[type]] });
+    this.setState({ choices: knownInsults[type].map(i => i) });
   }
 
   endRound(turnType, winner) {
-    this.setState(() => ({
-      playerTurnType: turnType,
-      winPrevExchange: winner,
-      pirateMsg: ''
-    }));
-    this.props.updatePlayerTurn();
-  }
-
-  turnStart() {
-
+    this.playerTurnType = turnType;
+    this.winPrevExchange = winner;
+    // this.setState(() => ({
+    //   pirateMsg: ''
+    // }));
+    // this.props.updatePlayerTurn();
   }
 
   playerTurn(turnType) {
