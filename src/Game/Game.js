@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
-import TurnStart from '../TurnStart/TurnStart';
-import TurnEnd from '../TurnEnd/TurnEnd';
+import FightStart from '../FightStart/FightStart';
+import FightEnd from '../FightEnd/FightEnd';
 // import Greet from '../Greet/Greet';
 import Fight from '../Fight/Fight';
 import Debug from '../Debug';
@@ -51,8 +51,8 @@ export default class Game extends Component {
   renderMode() {
     let mode = this.state.mode;
     if (mode === 'title') return <Title updateMode={this.updateMode} />;
-    else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
-    else if (mode === 'turnEnd') return <TurnEnd updateMode={this.updateMode} turn={this.state.turn} />;
+    else if (mode === 'fightStart') return <FightStart updateMode={this.updateMode} turn={this.state.turn} />;
+    else if (mode === 'fightEnd') return <FightEnd updateMode={this.updateMode} turn={this.state.turn} />;
     // else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
     else if (mode === 'fight') {
       return <Fight

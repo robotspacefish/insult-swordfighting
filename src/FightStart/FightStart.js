@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import './TurnStart.css';
+import './FightStart.css';
 
-export default class TurnStart extends Component {
+export default class FightStart extends Component {
   static defaultProps = { modeToSet : 'fight'};
 
   componentDidMount() {
@@ -14,7 +14,7 @@ export default class TurnStart extends Component {
   }
   render() {
     return (
-      <div className="TurnStart container">
+      <div className="FightStart container">
         <h1>{this.props.turn} Start</h1>
       </div>
     )
