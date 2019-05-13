@@ -2,11 +2,11 @@ import React from 'react';
 import Message from '../Message/Message';
 import './Messages.css';
 
-const Messages = ({ txt }) => {
+const Messages = ({ playerMsg, pirateMsg }) => {
   return (
     <div id="messages">
-      <Message name="Player" msg={txt.playerMsg} />
-      <Message name="Pirate" msg={txt.pirateMsg} />
+      <Message name="Pirate" msg={pirateMsg} />
+      <Message name="Player" msg={playerMsg} />
     </div>
   );
 };

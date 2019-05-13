@@ -11,24 +11,25 @@ export default class Choices extends Component {
 
   makeChoice(choice) {
     this.setState({ isChoiceMade: true }, () => {
-      this.props.updateTurn(choice);
       // re-enable button click after a delay
       setTimeout(() => {
         this.setState({ isChoiceMade: false });
       }, 500);
     });
+    this.props.updateTurnActions(choice);
   }
 
   render() {
     return (
       <div id="player-choices" className="Choices container">
         {
-          this.props.choices.map(c => (<Choice
-                                          choice={c}
-                                          key={c}
-                                          makeChoice={this.makeChoice}
-                                          isChoiceMade={this.state.isChoiceMade}
-                                      />))
+          this.props.choices.map(c => (
+            (<Choice
+              choice={c}
+              key={c}
+              makeChoice={this.makeChoice}
+              isChoiceMade={this.state.isChoiceMade}
+          />)))
         }
       </div>
     )

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import TurnStart from '../TurnStart/TurnStart';
-import Greet from '../Greet/Greet';
+import TurnEnd from '../TurnEnd/TurnEnd';
+// import Greet from '../Greet/Greet';
 import Fight from '../Fight/Fight';
 import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
@@ -12,38 +13,28 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'title',
+      mode: 'fight',
       showInstructions : false,
       turn: 'player'
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
+    this.updatePlayerTurn = this.updatePlayerTurn.bind(this);
   }
 
   updateMode(mode) {
     this.setState({ mode })
   }
 
-  updateTurnType(turnType) {
-    this.setState({ turnType });
-  }
-
-  updatePlayerChoices() {
-    let choices = this.state.turnType === 'insult' ? [...this.props.knownInsults.insults] : [...this.props.knownInsults.comebacks];
-    this.setState({ choices })
-  }
-
-  //handles the chosen insult or comeback the user selected
-  // handleSelected = (selected) => {
-  //   this.setState({
-  //     speaker: 'Player',
-  //     msg: selected
-  //   });
-  // }
-
-  toggleTurnType = () => {
-    let turnType = this.state.turnType === 'insult' ? 'comeback' : 'insult';
-    this.setState(() => ({ turnType }));
+  /**
+   * @desc Updates the turn to either 'player' or 'pirate'
+   * @desc This is used for TurnStart to display turn information
+   */
+  updatePlayerTurn() {
+    let turn = this.state.turn === 'player'
+    ? 'pirate' : 'player';
+    this.setState({ turn });
+    // console.log(`updating ${this.state.turn} to ${turn}`)
   }
 
   handleShowInstructions(evt) {
@@ -57,26 +48,17 @@ export default class Game extends Component {
     }, 300);
   }
 
-  playerTurn() {
-    // TODO player actions
-  }
-
-  pirateTurn() {
-    // TODO pirate actions
-    if (this.state.turnType === 'insult') {
-
-    } else {
-
-    }
-  }
-
   renderMode() {
     let mode = this.state.mode;
     if (mode === 'title') return <Title updateMode={this.updateMode} />;
     else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
-    else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
+    else if (mode === 'turnEnd') return <TurnEnd updateMode={this.updateMode} turn={this.state.turn} />;
+    // else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
     else if (mode === 'fight') {
-      return <Fight updateMode={this.updateMode}
+      return <Fight
+                updateMode={this.updateMode}
+                updatePlayerTurn={this.updatePlayerTurn}
+                updateRoundWin={this.updateRoundWin}
       />
     };
   }
