@@ -224,7 +224,7 @@ export default class Fight extends Component {
     // console.log('FIGHT: render()')
     return (
       <div className="Fight container">
-        <Images />
+        {/* <Images /> */}
         <Messages
            playerMsg={this.state.playerMsg}
            pirateMsg={this.state.pirateMsg}
