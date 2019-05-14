@@ -72,6 +72,7 @@ export default class Fight extends Component {
       this.pirateInsult(pool);
       this.setState({ pirateMsg: this.currentPirateMsg })
     }
+    this.currentPirateRoundInsultPool = pool;
   }
 
   /**
@@ -86,14 +87,16 @@ export default class Fight extends Component {
    * @desc Randomly select a pirate insult from the current round pool
    */
   pirateInsult(pool = this.currentPirateRoundInsultPool) {
+
     const insult = pool[this.randomIndex(pool.length)];
     this.currentPirateRoundInsultPool = pool.filter(i => i !== insult);
     this.currentPirateMsg = insult;
 
-    if (this.currentPirateMsg === undefined) {
-      // refill insults
-      this.initPirateRound();
-    }
+    // if (this.currentPirateMsg === undefined) {
+    //   // refill insults
+    //   this.initPirateRound();
+    // }
+    console.log('getting insult', insult)
     return insult;
   }
 
@@ -136,10 +139,13 @@ export default class Fight extends Component {
     this.setState({ knownInsults : updatedInsults });
   }
 
-  isICUnknown(IC, turnType) {
+  isICKnown(IC, turnType) {
     let type = turnType === 'insult'
       ? 'comebacks' : 'insults';
-    return this.state.knownInsults[type].indexOf(IC) === -1;
+    if (this.state.knownInsults[type].indexOf(IC) === -1) {
+      return false;
+    }
+    return true;
   }
   // playerActions(turnType) {
   //   this.setPlayerChoices(turnType);
@@ -241,23 +247,27 @@ export default class Fight extends Component {
       pirateComeback = this.pirateComeback();
     }
     const winner = this.handleICMatch();
-    debugger;
+
+    // store comeback
     if (pirateComeback !== '' && winner === 'draw'
-      && this.isICUnknown(pirateComeback, prevPlayerTurnType)) {
+      && !this.isICKnown(pirateComeback, prevPlayerTurnType)) {
+        console.log('storing comeback')
       this.roundLearnedIC.comebacks.push(pirateComeback)
-        console.log(this.roundLearnedIC.comebacks)
     }
 
     this.setPlayerChoices(this.playerTurnType);
 
     if (this.playerTurnType === 'comeback') {
-      // debugger;
-      const insult = this.pirateInsult();
 
-      if (this.state.knownInsults.insults.indexOf(insult) === -1) {
-        this.roundLearnedIC.insults.push(insult);
+      const pirateInsult = this.pirateInsult();
+      console.log(pirateInsult)
+      // store insult
+      if (!this.isICKnown(pirateInsult, prevPlayerTurnType)) {
+        console.log('storing insult')
+        this.roundLearnedIC.insults.push(pirateInsult);
       }
     }
+    console.log('learned this round:', this.roundLearnedIC)
     this.setState({ exchangeWinner : winner })
 
 
