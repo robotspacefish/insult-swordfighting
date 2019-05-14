@@ -251,7 +251,7 @@ export default class Fight extends Component {
           <Choices
               choices={this.state.choices}
               updatePlayerTurn={this.props.updatePlayerTurn}
-              updateRoundActions={this.updateRound}
+              updateRound={this.updateRound}
           />
         </Scroll>
       </div>
