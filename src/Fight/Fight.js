@@ -3,77 +3,55 @@ import Images from '../Images/Images';
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Scroll from '../Scroll/Scroll';
-import knownInsults from '../assets/knownInsults.js';
+// import knownInsults from '../assets/knownInsults.js';
 import allInsults from '../assets/insults.js';
 import EndExchange from '../EndExchange/EndExchange';
+import Pirate from '../Pirate';
+import { player } from '../Player';
+import { delay } from '../helpers';
 
 export default class Fight extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      knownInsults : knownInsults,
+      newRound : false,
+      exchangeWinner: null,
       choices: [],
-      // currentPirateChoice : allInsults[this.randomIndex(allInsults.length)],
-      // currentPlayerChoice: '', // chosen from the btn options
-      // playerTurnType: 'comeback',
       playerMsg: '',
-      pirateMsg: '',
-      exchangeWinner : null
+      pirateMsg: ''
     };
 
-    this.updateRoundActions = this.updateRoundActions.bind(this);
+    this.updateRound = this.updateRound.bind(this);
     this.winPrevExchange = null;
-    this.currentPirateRoundInsultPool = []; // so pirate doesn't repeat insults
-    this.currentPlayerMsg = '';
-    this.currentPirateMsg = '';
-    this.playerTurnType = 'comeback';
+
     this.roundLearnedIC = {
       insults : [],
       comebacks : []
     };
+
+    this.pirate = new Pirate('comeback', [...allInsults]);
   }
 
   componentDidMount() {
-    this.initPirateRound();
-    const type = this.playerTurnType === 'insult'
-      ? 'insults' : 'comebacks';
-
-    this.setState({ choices: [...knownInsults[type]]});
+    // console.log('FIGHT: component did mount')
+    // this.state.pirate.action();
+    this.setState({ choices : player.updateChoices() })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.playerMsg !== this.currentPlayerMsg) {
-      this.setState({ playerMsg : this.currentPlayerMsg});
-    }
-    if (prevState.pirateMsg !== this.currentPirateMsg) {
-      this.setState({ pirateMsg: this.currentPirateMsg });
-    }
+    // console.log('FIGHT: component did update')
 
-    // console.log('prevState:',prevState)
+    // console.log('player',player)
+    // console.log('pirate:',this.pirate)
+    console.log('component did update', prevState)
+    console.log('player:', player.turnType, '| pirate:', this.pirate.turnType)
   }
 
-  componentWillUnmount() {
-    clearInterval(this.delayId);
+  initPirate() {
+    // create a new pirate
+    return new Pirate('comeback', allInsults);
   }
 
-  delay(func, timeout = 1000) {
-    this.delayId = setTimeout(func, timeout);
-  }
-
-  /**
-   * @desc Start each round with a random pirate insult and put the remaining insults
-   * into a pool for the pirate to insult from the remainder of the round
-   */
-  initPirateRound() {
-    // set first pirate insult
-    let pool = this.initPirateRoundInsultPool();
-    // set a random insult
-    if (this.playerTurnType === 'comeback') {
-      this.pirateInsult(pool);
-      this.setState({ pirateMsg: this.currentPirateMsg })
-    }
-    this.currentPirateRoundInsultPool = pool;
-  }
 
   /**
    * @desc initialize each round's pool of insults for the pirate so they don't
@@ -83,60 +61,66 @@ export default class Fight extends Component {
     return allInsults.map(i => i.insult);
   }
 
-  /**
-   * @desc Randomly select a pirate insult from the current round pool
-   */
-  pirateInsult(pool = this.currentPirateRoundInsultPool) {
 
-    const insult = pool[this.randomIndex(pool.length)];
-    this.currentPirateRoundInsultPool = pool.filter(i => i !== insult);
-    this.currentPirateMsg = insult;
+  // updateKnownInsults() {
+  //   // let type = turnType === 'insult' ? 'comebacks' : 'insults';
+  //   // const updatedInsults = Object.assign({}, this.state.knownInsults);
 
-    // if (this.currentPirateMsg === undefined) {
-    //   // refill insults
-    //   this.initPirateRound();
-    // }
-    console.log('getting insult', insult)
-    return insult;
-  }
-
-  pirateComeback() {
-    const correctChance = Math.random();
-    let res = '';
-    if (correctChance > 0.30) {
-      // return matching comeback
-      res = this.getCorrectResponse();
-    } else {
-      // return comeback not equal to correct response
-      res = this.getIncorrectResponse().comeback;
-    }
-
-    this.currentPirateMsg = res;
-    return res;
-  }
+  //   const updatedInsults = {};
+  //   updatedInsults.insults = [...this.state.knownInsults.insults, ...this.roundLearnedIC.insults];
+  //   updatedInsults.comebacks = [...this.state.knownInsults.comebacks, ...this.roundLearnedIC.comebacks];
+  //   this.setState({ knownInsults : updatedInsults });
+  // }
 
   /**
    * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
    * @return {Number} matched.length
    */
   isMatch() {
-    // TODO refactor
-    const notplayerTurnType = this.playerTurnType === 'insult' ? 'comeback' : 'insult';
+    // TODO refactor with find?
+
     const matched = allInsults.filter(i => {
-      return i[this.playerTurnType] === this.currentPlayerMsg && i[notplayerTurnType] === this.currentPirateMsg;
+
+      return i[player.turnType] === player.msg && i[this.pirate.turnType] === this.pirate.msg;
     });
 
     return matched.length > 0;
   }
+  // isMatch() {
+  //   // TODO refactor
+  //   const notplayerTurnType = this.playerTurnType === 'insult' ? 'comeback' : 'insult';
+  //   const matched = allInsults.filter(i => {
+  //     return i[this.playerTurnType] === this.currentPlayerMsg && i[notplayerTurnType] === this.currentPirateMsg;
+  //   });
 
-  updateKnownInsults() {
-    // let type = turnType === 'insult' ? 'comebacks' : 'insults';
-    // const updatedInsults = Object.assign({}, this.state.knownInsults);
+  //   return matched.length > 0;
+  // }
 
-    const updatedInsults = {};
-    updatedInsults.insults = [...this.state.knownInsults.insults, ...this.roundLearnedIC.insults];
-    updatedInsults.comebacks = [...this.state.knownInsults.comebacks, ...this.roundLearnedIC.comebacks];
-    this.setState({ knownInsults : updatedInsults });
+  nextExchange() {
+    let playerMsg = player.turnType === 'insult'
+      ? player.msg : null ;
+
+      this.pirate.action(allInsults, playerMsg);
+
+    // set choices
+    setTimeout(() => {
+      this.setState({ choices: player.updateChoices() });
+    }, 2000);
+  }
+
+  clearPrevExchangeDisplays() {
+    // clear messages and choices
+    setTimeout(() => {
+      this.setState({ pirateMsg: '', playerMsg: '', choices: [] })
+    }, 1000);
+
+    if (player.turnType === 'insult') {
+      // TODO
+    } else {
+      setTimeout(() => {
+        this.setState({ pirateMsg: this.pirate.msg, playerMsg: '' })
+      }, 1800);
+    }
   }
 
   isICKnown(IC, turnType) {
@@ -147,37 +131,6 @@ export default class Fight extends Component {
     }
     return true;
   }
-  // playerActions(turnType) {
-  //   this.setPlayerChoices(turnType);
-  //   this.setPlayerTurnType(turnType);
-  // }
-
-  pirateActions(turnType) {
-    if (turnType === 'insult') {
-      this.delay(() => this.pirateComeback());
-    } else {
-      if (this.isMatch()) {
-        this.delay(() => this.pirateInsult());
-      }
-    }
-  }
-
-  matchActions(turnType) {
-
-  }
-
-  /**
-   * @desc return the comeback that is paired with the player's chosen insult
-   * @return {String} res - the correct comeback
-   */
-  getCorrectResponse() {
-    console.log('getting correct response')
-    const res = allInsults.filter(i => (
-      i.insult === this.currentPlayerMsg
-    ));
-    // console.log(res[0].comeback)
-    return res[0].comeback;
-  }
 
   checkForWinner() {
     if (this.winPrevExchange === 'player') {
@@ -187,113 +140,57 @@ export default class Fight extends Component {
     }
   }
 
-  handleICMatch() {
-    let winner = '';
-    // let currentTurnType = this.playerTurnType;
-    if (this.isMatch()) {
-      winner = 'draw';
-      // opposite player insults
-      this.toggleTurnType();
-    } else {
-      winner = this.playerTurnType === 'insult'
-        ? 'player' : 'pirate';
-
-      if (winner === 'player') {
-        this.playerTurnType = 'insult';
-      } else {
-        this.currentPlayerMsg = '';
-        this.playerTurnType = 'comeback';
-      }
-    }  return winner;
-  }
-
-  getIncorrectResponse() {
-    console.log('getting incorrect response')
-    let res = '';
-    do {
-      const index = this.randomIndex(allInsults.length);
-      res = allInsults[index];
-    } while (res.insult === this.currentPlayerMsg);
-
-    return res;
-  }
-
-  removeInsultFromPool(insultToRemove) {
-    this.currentPirateRoundInsultPool = this.currentPirateRoundInsultPool.filter(i => (
-      i !== insultToRemove
-    ));
-  }
-
-  randomIndex(len) {
-    return Math.floor(Math.random() * len);
-  }
-
-  setPlayerMsg(msg) {
-    this.setState({ playerMsg: msg });
-  }
-
   /**
    * @desc handles the pirate actions and set up of player choices
    * @param {String} choice - user's selected insult or comeback
    */
-  updateRoundActions(choice) {
-    this.setState({ exchangeWinner : null });
-    const prevPlayerTurnType = this.playerTurnType;
-    // set class property to use within functions since state doesn't update right away
-    this.currentPlayerMsg = choice;
-    let pirateComeback = '';
+  updateRound(choice) {
 
-    if (this.playerTurnType === 'insult') {
-      pirateComeback = this.pirateComeback();
-    }
-    const winner = this.handleICMatch();
+    player.msg = choice;
+    this.setState({ playerMsg : player.msg });
 
-    // store comeback
-    if (pirateComeback !== '' && winner === 'draw'
-      && !this.isICKnown(pirateComeback, prevPlayerTurnType)) {
-        console.log('storing comeback')
-      this.roundLearnedIC.comebacks.push(pirateComeback)
-    }
+    this.pirate.action(allInsults, player.msg)
 
-    this.setPlayerChoices(this.playerTurnType);
-
-    if (this.playerTurnType === 'comeback') {
-
-      const pirateInsult = this.pirateInsult();
-      console.log(pirateInsult)
-      // store insult
-      if (!this.isICKnown(pirateInsult, prevPlayerTurnType)) {
-        console.log('storing insult')
-        this.roundLearnedIC.insults.push(pirateInsult);
+    setTimeout(() => {
+      debugger
+      // TODO fix pirate going twice in a row
+      // update msgs in state
+      // this.updateMsgsInState();
+      this.setState({ pirateMsg : this.pirate.msg });
+      let winner = '';
+      if (this.isMatch()) {
+        winner = 'draw';
+        this.swapTurnTypes();
+        player.roundPoints = 0;
+        this.pirate.roundPoints = 0;
+      } else {
+        if (player.turnType === 'insult') {
+          winner = 'player';
+          player.roundPoints++;
+        } else {
+          winner = 'pirate';
+          this.pirate.roundPoints++;
+        }
       }
-    }
-    console.log('learned this round:', this.roundLearnedIC)
-    this.setState({ exchangeWinner : winner })
 
-
-
-    // TODO if 2 rounds won by same person/computer
-    // this.endRound
-    // this.clearMsgs();
-
+      this.nextExchange();
+      this.clearPrevExchangeDisplays();
+    }, 500);
   }
 
-  clearMsg(msgType) {
-    this.setState({ [msgType]: '' });
-    // this.setState({ pirateMsg : '', playerMsg : '' })
+  /**
+   * @desc swap turn types of player and pirate
+   */
+  swapTurnTypes() {
+    let nextTurnType = player.turnType === 'insult' ? 'comeback' : 'insult';
+
+    this.pirate.turnType = player.turnType;
+    player.turnType = nextTurnType;
+    console.log('swapping:', player.turnType)
   }
 
-  setPlayerInsults() {
-    this.setState({ choices: [...this.state.knownInsults.insults] });
-  }
-
-  setPlayerComebacks() {
-    this.setState({ choices: [...this.state.knownInsults.comebacks] });
-  }
-
-  setPlayerChoices(turnType) {
-    let type = `${turnType}s`;
-    this.setState({ choices: this.state.knownInsults[type].map(i => i) });
+  updateMsgsInState() {
+    this.setState({ playerMsg: player.msg, pirateMsg: this.pirate.msg });
   }
 
   endRound(turnType, winner) {
@@ -334,25 +231,27 @@ export default class Fight extends Component {
   }
 
   render() {
+    // console.log('FIGHT: render()')
     return (
       <div className="Fight container">
         <Images />
         <Messages
            playerMsg={this.state.playerMsg}
            pirateMsg={this.state.pirateMsg}
+           playerTurnType={player.turnType}
          />
         {
           this.state.exchangeWinner !== null &&
           <EndExchange
             winner={this.state.exchangeWinner}
-            turnType={this.playerTurnType}
+            turnType={this.state.player.turnType}
           />
         }
          <Scroll>
           <Choices
               choices={this.state.choices}
               updatePlayerTurn={this.props.updatePlayerTurn}
-              updateRoundActions={this.updateRoundActions}
+              updateRoundActions={this.updateRound}
           />
         </Scroll>
       </div>
