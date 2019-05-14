@@ -171,6 +171,26 @@ export default class Fight extends Component {
     }
   }
 
+  checkForICMatch() {
+    let winner = '';
+    // let currentTurnType = this.playerTurnType;
+    if (this.isMatch()) {
+      winner = 'draw';
+      // opposite player insults
+      this.toggleTurnType();
+    } else {
+      winner = this.playerTurnType === 'insult'
+        ? 'player' : 'pirate';
+
+      if (winner === 'player') {
+        this.playerTurnType = 'insult';
+      } else {
+        this.currentPlayerMsg = '';
+        this.playerTurnType = 'comeback';
+      }
+    }  return winner;
+  }
+
   getIncorrectResponse() {
     console.log('getting incorrect response')
     let res = '';
@@ -196,12 +216,16 @@ export default class Fight extends Component {
     this.setState({ playerMsg: msg });
   }
 
+  /**
+   * @desc handles the pirate actions and set up of player choices
+   * @param {String} choice - user's selected insult or comeback
+   */
   updateRoundActions(choice) {
     this.setState({ exchangeWinner : null });
     // set class property to use within functions since state doesn't update right away
     this.currentPlayerMsg = choice;
 
-    let winner = 'draw';
+
     if (this.playerTurnType === 'insult') {
       const comeback = this.pirateComeback();
       // debugger
@@ -209,22 +233,8 @@ export default class Fight extends Component {
         this.roundIC.comebacks.push(comeback)
       }
     }
-    // let currentTurnType = this.playerTurnType;
-    if (this.isMatch()) {
-      winner = 'draw';
-      // opposite player insults
-      this.toggleTurnType();
-    } else {
-      winner = this.playerTurnType === 'insult'
-        ? 'player' : 'pirate';
+    const winner = this.checkForICMatch();
 
-      if (winner === 'player') {
-        this.playerTurnType = 'insult';
-      } else {
-        this.currentPlayerMsg = '';
-        this.playerTurnType = 'comeback';
-      }
-    }
     this.setPlayerChoices(this.playerTurnType);
 
     if (this.playerTurnType === 'comeback') {
@@ -328,12 +338,3 @@ export default class Fight extends Component {
     )
   }
 }
-
-// const turn = () => {
-//   let insults = [...knownInsults.insults];
-//   let comebacks = [...knownInsults.comebacks]
-
-//   displayPlayerInsultChoices(playerTurnType === 'insults' ? insults : comebacks);
-// };
-
-// const displayPlayerInsultChoices = (choices => choices.map(choice => ));
