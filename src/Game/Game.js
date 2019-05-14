@@ -66,7 +66,7 @@ export default class Game extends Component {
     return (
       <div className="Game container">
 
-        <Debug  updateMode={this.updateMode} />
+        {/* <Debug  updateMode={this.updateMode} /> */}
 
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>
