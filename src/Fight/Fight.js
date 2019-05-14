@@ -26,7 +26,7 @@ export default class Fight extends Component {
     this.currentPirateRoundInsultPool = []; // so pirate doesn't repeat insults
     this.currentPlayerMsg = '';
     this.currentPirateMsg = '';
-    this.playerTurnType = 'insult';
+    this.playerTurnType = 'comeback';
     this.roundLearnedIC = {
       insults : [],
       comebacks : []
