@@ -149,13 +149,11 @@ export default class Fight extends Component {
     player.msg = choice;
     this.setState({ playerMsg : player.msg });
 
-    this.pirate.action(allInsults, player.msg)
+    if (this.pirate.turnType === 'comeback') {
+      this.pirate.comeback(allInsults, player.msg);
+    }
 
     setTimeout(() => {
-      debugger
-      // TODO fix pirate going twice in a row
-      // update msgs in state
-      // this.updateMsgsInState();
       this.setState({ pirateMsg : this.pirate.msg });
       let winner = '';
       if (this.isMatch()) {
