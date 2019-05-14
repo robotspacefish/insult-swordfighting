@@ -5,22 +5,31 @@ import './Choices.css';
 export default class Choices extends Component {
   constructor(props) {
     super(props);
-    this.updateChoiceSelection = this.updateChoiceSelection.bind(this);
+    this.state = { isChoiceMade: false };
+    this.makeChoice = this.makeChoice.bind(this);
   }
 
-  updateChoiceSelection(choice) {
-    this.props.updateTurn(choice);
+  makeChoice(choice) {
+    this.setState({ isChoiceMade: true }, () => {
+      // re-enable button click after a delay
+      setTimeout(() => {
+        this.setState({ isChoiceMade: false });
+      }, 500);
+    });
+    this.props.updateRoundActions(choice);
   }
 
   render() {
     return (
       <div id="player-choices" className="Choices container">
         {
-          this.props.choices.map(c => (<Choice
-                                          choice={c}
-                                          key={c}
-                                          updateChoiceSelection={this.updateChoiceSelection}
-                                      />))
+          this.props.choices.map(c => (
+            (<Choice
+              choice={c}
+              key={c}
+              makeChoice={this.makeChoice}
+              isChoiceMade={this.state.isChoiceMade}
+          />)))
         }
       </div>
     )

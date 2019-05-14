@@ -6,6 +6,7 @@
   height: auto;
   top: 60px;
   animation: dropdown 400ms;
+  animation-timing-function: ease;
 }
 
 @keyframes dropdown {

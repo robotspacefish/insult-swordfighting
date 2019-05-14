@@ -1,10 +1,9 @@
-.TurnStart {
+.FightStart {
   display: flex;
   justify-content: center;
-  /* align-items: center;s */
 }
 
-.TurnStart h1 {
+.FightStart h1 {
   text-align: center;
   color: white;
   text-transform: uppercase;

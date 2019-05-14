@@ -7,11 +7,11 @@ export default class Choice extends Component {
   }
 
   handleClick() {
-    this.props.updateChoiceSelection(this.props.choice);
+    this.props.makeChoice(this.props.choice);
   }
   render() {
     return (
-      <button onClick={this.handleClick}>
+      <button onClick={this.handleClick} disabled={this.props.isChoiceMade}>
         <div className="hovered-choice"></div>
         {this.props.choice}
       </button>

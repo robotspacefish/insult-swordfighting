@@ -16,6 +16,12 @@
   margin: 5px 0;
 }
 
+#player-choices button:disabled,
+#player-choices button:hover:disabled {
+  color: grey;
+  font-weight: initial;
+}
+
 .hovered-choice {
   width: 10px;
   height: 10px;

@@ -1,74 +1,40 @@
 import React, { Component } from 'react'
 import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
-import TurnStart from '../TurnStart/TurnStart';
-import Greet from '../Greet/Greet';
+import FightStart from '../FightStart/FightStart';
+import FightEnd from '../FightEnd/FightEnd';
+// import Greet from '../Greet/Greet';
 import Fight from '../Fight/Fight';
+import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
 import './Game.css';
 
-import knownInsults from '../assets/knownInsults.js';
-
 export default class Game extends Component {
-  static defaultProps = {
-    knownInsults : knownInsults
-  }
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'title',
-      knownInsults: Object.assign({}, this.props.knownInsults),
-      choices: [...this.props.knownInsults.insults], // starts as insults
-      currentChoice: '',
+      mode: 'fight',
+      showInstructions : false,
       turn: 'player',
-      turnType : 'insult',
-      txt: {
-        playerMsg: 'playerMsg',
-        pirateMsg: 'pirateMsg'
-      },
-      showInstructions : false
+      roundCounter : 1
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
+    this.updatePlayerTurn = this.updatePlayerTurn.bind(this);
   }
 
   updateMode(mode) {
     this.setState({ mode })
   }
 
-  updateTurnType(turnType) {
-    this.setState({ turnType });
-  }
-
-  updatePlayerChoices() {
-    let choices = this.state.turnType === 'insult' ? [...this.props.knownInsults.insults] : [...this.props.knownInsults.comebacks];
-    this.setState({ choices })
-  }
-
-  //handles the chosen insult or comeback the user selected
-  handleSelected = (selected) => {
-    this.setState({
-      speaker: 'Player',
-      msg: selected
-    });
-  }
-
-  toggleTurnType = () => {
-    let turnType = this.state.turnType === 'insult' ? 'comeback' : 'insult';
-    this.setState(() => ({ turnType }));
-  }
-
-  renderMode() {
-    let mode = this.state.mode;
-    if (mode === 'title') return <Title updateMode={this.updateMode} />;
-    else if (mode === 'turnStart') return <TurnStart updateMode={this.updateMode} turn={this.state.turn} />;
-    else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
-    else if (mode === 'fight') {
-      return <Fight updateMode={this.updateMode}
-                    txt={this.state.txt}
-                    choices={this.state.choices}
-             />
-    };
+  /**
+   * @desc Updates the turn to either 'player' or 'pirate'
+   * @desc This is used for TurnStart to display turn information
+   */
+  updatePlayerTurn() {
+    let turn = this.state.turn === 'player'
+    ? 'pirate' : 'player';
+    this.setState({ turn });
   }
 
   handleShowInstructions(evt) {
@@ -81,16 +47,26 @@ export default class Game extends Component {
       this.setState({ showInstructions: !this.state.showInstructions });
     }, 300);
   }
+
+  renderMode() {
+    let mode = this.state.mode;
+    if (mode === 'title') return <Title updateMode={this.updateMode} />;
+    else if (mode === 'fightStart') return <FightStart updateMode={this.updateMode} turn={this.state.turn} />;
+    else if (mode === 'fightEnd') return <FightEnd updateMode={this.updateMode} turn={this.state.turn} />;
+    // else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
+    else if (mode === 'fight') {
+      return <Fight
+                updateMode={this.updateMode}
+                updatePlayerTurn={this.updatePlayerTurn}
+                updateRoundWin={this.updateRoundWin}
+      />
+    };
+  }
   render() {
     return (
       <div className="Game container">
 
-        {/* <div className="debug">
-          <span style={{paddingTop: '2px'}}>[ Debug ]</span>
-          <button onClick={() => this.updateMode('title')}>Title Mode</button>
-          <button onClick={() => this.updateMode('turnStart')}>TurnStart Mode</button>
-          <button onClick={() => this.updateMode('fight')}>Fight Mode</button>
-        </div> */}
+        <Debug  updateMode={this.updateMode} />
 
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>
