@@ -33,18 +33,10 @@ export default class Fight extends Component {
   }
 
   componentDidMount() {
-    // console.log('FIGHT: component did mount')
-    // this.state.pirate.action();
     this.setState({ choices : player.updateChoices() })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log('FIGHT: component did update')
-
-    // console.log('player',player)
-    // console.log('pirate:',this.pirate)
-    console.log('component did update', prevState)
-    console.log('player:', player.turnType, '| pirate:', this.pirate.turnType)
   }
 
   initPirate() {
