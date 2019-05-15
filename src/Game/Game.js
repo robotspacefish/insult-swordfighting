@@ -15,26 +15,14 @@ export default class Game extends Component {
     this.state = {
       mode: 'fight',
       showInstructions : false,
-      turn: 'player',
       roundCounter : 1
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
-    this.updatePlayerTurn = this.updatePlayerTurn.bind(this);
   }
 
   updateMode(mode) {
     this.setState({ mode })
-  }
-
-  /**
-   * @desc Updates the turn to either 'player' or 'pirate'
-   * @desc This is used for TurnStart to display turn information
-   */
-  updatePlayerTurn() {
-    let turn = this.state.turn === 'player'
-    ? 'pirate' : 'player';
-    this.setState({ turn });
   }
 
   handleShowInstructions(evt) {

@@ -44,7 +44,6 @@ export default class Fight extends Component {
     return new Pirate('comeback', allInsults);
   }
 
-
   /**
    * @desc initialize each round's pool of insults for the pirate so they don't
    * use repeat insults
@@ -52,17 +51,6 @@ export default class Fight extends Component {
   initPirateRoundInsultPool() {
     return allInsults.map(i => i.insult);
   }
-
-
-  // updateKnownInsults() {
-  //   // let type = turnType === 'insult' ? 'comebacks' : 'insults';
-  //   // const updatedInsults = Object.assign({}, this.state.knownInsults);
-
-  //   const updatedInsults = {};
-  //   updatedInsults.insults = [...this.state.knownInsults.insults, ...this.roundLearnedIC.insults];
-  //   updatedInsults.comebacks = [...this.state.knownInsults.comebacks, ...this.roundLearnedIC.comebacks];
-  //   this.setState({ knownInsults : updatedInsults });
-  // }
 
   /**
    * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
@@ -78,15 +66,6 @@ export default class Fight extends Component {
 
     return matched.length > 0;
   }
-  // isMatch() {
-  //   // TODO refactor
-  //   const notplayerTurnType = this.playerTurnType === 'insult' ? 'comeback' : 'insult';
-  //   const matched = allInsults.filter(i => {
-  //     return i[this.playerTurnType] === this.currentPlayerMsg && i[notplayerTurnType] === this.currentPirateMsg;
-  //   });
-
-  //   return matched.length > 0;
-  // }
 
   nextExchange() {
     let playerMsg = player.turnType === 'insult'
@@ -192,33 +171,24 @@ export default class Fight extends Component {
     // this.props.updatePlayerTurn();
   }
 
-  playerTurn(turnType) {
-    this.updatePlayerChoices(turnType);
-  }
+  // playerTurn(turnType) {
+  //   this.updatePlayerChoices(turnType);
+  // }
 
   /**
    * @desc Updates the player's choice in state based on option clicked
    * @param {String} choice
    */
-  updateSelectedChoice(choice) {
-    this.setState({ currentPlayerChoice : choice})
-  }
+  // updateSelectedChoice(choice) {
+  //   this.setState({ currentPlayerChoice : choice})
+  // }
 
-  updatePlayerChoices(turnType) {
-    const insults = Object.assign({}, this.state.knownInsults);
-    this.setState(st => ({
-      choices : turnType === 'insult' ? [...insults.insults] : [...insults.comebacks]
-    }))
-  }
-
-  setPlayerTurnType(newTurnType) {
-    this.playerTurnType = newTurnType;
-  }
-
-  toggleTurnType() {
-    this.playerTurnType = this.playerTurnType === 'insult'
-      ? 'comeback' : 'insult';
-  }
+  // updatePlayerChoices(turnType) {
+  //   const insults = Object.assign({}, this.state.knownInsults);
+  //   this.setState(st => ({
+  //     choices : turnType === 'insult' ? [...insults.insults] : [...insults.comebacks]
+  //   }))
+  // }
 
   render() {
     // console.log('FIGHT: render()')
