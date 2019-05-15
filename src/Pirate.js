@@ -7,6 +7,7 @@ export default class Pirate {
     this.insultPool = this.initPool(); // the pool to start each round
     this.turnType = 'comeback';
     this.roundPoints = 0;
+    this.matchedComeback = false;
   }
 
   /**
@@ -18,26 +19,32 @@ export default class Pirate {
   }
 
   insult() {
+    if (this.insultPool.length === 0) {
+      // refill insults for now,
+      // TODO maybe end the round in the future
+      this.insultPool = this.initPool();
+    }
+
     const pool = this.insultPool;
+
     this.msg = pool[randomIndex(pool.length)];
     this.insultPool = pool.filter(i => i !== this.msg);
 
-    // if (this.currentPirateMsg === undefined) {
-    //   // refill insults
-    //   this.initPirateRound();
-    // }
-    console.log('getting insult', this.msg)
+    // console.log('getting insult', this.msg)
     return this.msg;
   }
 
-  comeback(allInsults, playerInsult) {
+  comeback(playerInsult) {
+    this.matchedComeback = false; // reset
+
     const correctChance = Math.random();
     if (correctChance > 0.30) {
-      this.msg = this.getCorrectResponse(allInsults, playerInsult);
+      this.msg = this.getCorrectResponse(playerInsult);
+      this.matchedComeback = true;
     } else {
       this.msg = this.getIncorrectResponse();
     }
-    console.log('getting comeback:',this.msg)
+    // console.log('getting comeback:',this.msg)
     return this.msg;
   }
 

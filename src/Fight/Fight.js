@@ -27,12 +27,7 @@ export default class Fight extends Component {
     this.updateRound = this.updateRound.bind(this);
     this.winPrevExchange = null;
 
-    this.roundLearnedIC = {
-      insults : [],
-      comebacks : []
-    };
-
-    this.pirate = new Pirate('comeback', [...allInsults]);
+    this.pirate = new Pirate('comeback');
   }
 
   componentDidMount() {
@@ -44,15 +39,7 @@ export default class Fight extends Component {
 
   initPirate() {
     // create a new pirate
-    return new Pirate('comeback', allInsults);
-  }
-
-  /**
-   * @desc initialize each round's pool of insults for the pirate so they don't
-   * use repeat insults
-   */
-  initPirateRoundInsultPool() {
-    return allInsults.map(i => i.insult);
+    return new Pirate('comeback');
   }
 
   /**
@@ -71,10 +58,7 @@ export default class Fight extends Component {
   }
 
   nextExchange() {
-    let playerMsg = player.turnType === 'insult'
-      ? player.msg : null ;
-
-      this.pirate.action(allInsults, playerMsg);
+    this.pirate.turnType === 'insult' && this.pirate.insult();
 
     // set choices
     setTimeout(() => {
@@ -103,15 +87,6 @@ export default class Fight extends Component {
     }
   }
 
-  isICKnown(IC, turnType) {
-    let type = turnType === 'insult'
-      ? 'comebacks' : 'insults';
-    if (this.state.knownInsults[type].indexOf(IC) === -1) {
-      return false;
-    }
-    return true;
-  }
-
   checkForWinner() {
     if (this.winPrevExchange === 'player') {
       console.log('*** player wins round ***')
@@ -119,15 +94,6 @@ export default class Fight extends Component {
       console.log('*** pirate wins round ***')
     }
   }
-
-  // insultTurnActions() {
-  //   // load pirate comeback
-
-  // }
-
-  // comebackTurnActions() {
-  //   // load pirate insult
-  // }
 
   /**
    * @desc handles the pirate actions and set up of player choices
@@ -137,12 +103,15 @@ export default class Fight extends Component {
     player.msg = choice;
     this.setState({ playerMsg : player.msg });
 
+    const prevPirateTurnType = this.pirate.turnType;
+
     if (this.pirate.turnType === 'comeback') {
-      this.pirate.comeback(allInsults, player.msg);
+      this.pirate.comeback(player.msg);
     }
 
     setTimeout(() => {
       this.setState({ pirateMsg : this.pirate.msg });
+
       let winner = '';
       if (this.isMatch()) {
         winner = 'draw';
@@ -160,16 +129,37 @@ export default class Fight extends Component {
           this.pirate.roundPoints++;
         }
       }
-      if (player.roundPoints === 2 || this.pirate.roundPoints === 2) {
-        this.endRound(winner);
-      } else {
+
+      this.addICToKnown(prevPirateTurnType);
+
+      // if (player.roundPoints === 2 || this.pirate.roundPoints === 2) {
+        // this.endRound(winner);
+      // } else {
         this.setState({ exchangeWinner: winner });
         this.nextExchange();
-      }
+      // }
       this.clearPrevExchangeDisplays();
 
     }, TIMEOUT_DELAY/2);
+  } // end updateRound() ==============================================
+
+  addIfUnknown(type, msg) {
+    if (player.knownIC[type].indexOf(msg) === -1) {
+      console.log(`learned ${type}: ${msg}`)
+      player.knownIC[type].push(msg);
+    }
   }
+
+  addICToKnown(type) {
+    // add new insult/comeback if possible
+    if (type === 'comeback' && this.pirate.matchedComeback) {
+      this.addIfUnknown('comebacks', this.pirate.msg);
+    }
+    if (type === 'insult') {
+      this.addIfUnknown('insults', this.pirate.msg);
+    }
+  }
+
 
   /**
    * @desc swap turn types of player and pirate
@@ -182,10 +172,6 @@ export default class Fight extends Component {
     console.log('swapping:', player.turnType)
   }
 
-  updateMsgsInState() {
-    this.setState({ playerMsg: player.msg, pirateMsg: this.pirate.msg });
-  }
-
   endRound(winner) {
     // set newRound to true and/or set up new round with function
     // set exchangeWinner to display
@@ -193,22 +179,6 @@ export default class Fight extends Component {
       roundWinner : winner
     })
   }
-
-
-  /**
-   * @desc Updates the player's choice in state based on option clicked
-   * @param {String} choice
-   */
-  // updateSelectedChoice(choice) {
-  //   this.setState({ currentPlayerChoice : choice})
-  // }
-
-  // updatePlayerChoices(turnType) {
-  //   const insults = Object.assign({}, this.state.knownInsults);
-  //   this.setState(st => ({
-  //     choices : turnType === 'insult' ? [...insults.insults] : [...insults.comebacks]
-  //   }))
-  // }
 
   render() {
     // console.log('FIGHT: render()')
