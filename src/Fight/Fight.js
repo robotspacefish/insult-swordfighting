@@ -16,6 +16,7 @@ export default class Fight extends Component {
     this.state = {
       newRound : false,
       exchangeWinner: null,
+      roundWinner : null,
       choices: [],
       playerMsg: '',
       pirateMsg: ''
@@ -82,14 +83,22 @@ export default class Fight extends Component {
   clearPrevExchangeDisplays() {
     // clear messages and choices
     setTimeout(() => {
-      this.setState({ pirateMsg: '', playerMsg: '', choices: [] })
+      this.setState({
+        pirateMsg: '',
+        playerMsg: '',
+        choices: [],
+        exchangeWinner: null
+      })
     }, 1000);
 
     if (player.turnType === 'insult') {
       // TODO
     } else {
       setTimeout(() => {
-        this.setState({ pirateMsg: this.pirate.msg, playerMsg: '' })
+        this.setState({
+          pirateMsg: this.pirate.msg,
+          playerMsg: ''
+        })
       }, 1800);
     }
   }
@@ -111,12 +120,20 @@ export default class Fight extends Component {
     }
   }
 
+  // insultTurnActions() {
+  //   // load pirate comeback
+
+  // }
+
+  // comebackTurnActions() {
+  //   // load pirate insult
+  // }
+
   /**
    * @desc handles the pirate actions and set up of player choices
    * @param {String} choice - user's selected insult or comeback
    */
   updateRound(choice) {
-
     player.msg = choice;
     this.setState({ playerMsg : player.msg });
 
@@ -141,9 +158,14 @@ export default class Fight extends Component {
           this.pirate.roundPoints++;
         }
       }
-
-      this.nextExchange();
+      if (player.roundPoints === 2 || this.pirate.roundPoints === 2) {
+        this.endRound(winner);
+      } else {
+        this.setState({ exchangeWinner: winner });
+        this.nextExchange();
+      }
       this.clearPrevExchangeDisplays();
+
     }, 500);
   }
 
@@ -162,13 +184,12 @@ export default class Fight extends Component {
     this.setState({ playerMsg: player.msg, pirateMsg: this.pirate.msg });
   }
 
-  endRound(turnType, winner) {
-    this.playerTurnType = turnType;
-    this.winPrevExchange = winner;
-    // this.setState(() => ({
-    //   pirateMsg: ''
-    // }));
-    // this.props.updatePlayerTurn();
+  endRound(winner) {
+    // set newRound to true and/or set up new round with function
+    // set exchangeWinner to display
+    this.setState({
+      roundWinner : winner
+    })
   }
 
   // playerTurn(turnType) {
@@ -204,13 +225,12 @@ export default class Fight extends Component {
           this.state.exchangeWinner !== null &&
           <EndExchange
             winner={this.state.exchangeWinner}
-            turnType={this.state.player.turnType}
+            turnType={player.turnType}
           />
         }
          <Scroll>
           <Choices
               choices={this.state.choices}
-              updatePlayerTurn={this.props.updatePlayerTurn}
               updateRound={this.updateRound}
           />
         </Scroll>
