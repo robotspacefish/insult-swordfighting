@@ -10,6 +10,8 @@ import Pirate from '../Pirate';
 import { player } from '../Player';
 import { delay } from '../helpers';
 
+const TIMEOUT_DELAY = 1800;
+
 export default class Fight extends Component {
   constructor(props) {
     super(props);
@@ -77,7 +79,7 @@ export default class Fight extends Component {
     // set choices
     setTimeout(() => {
       this.setState({ choices: player.updateChoices() });
-    }, 2000);
+    }, TIMEOUT_DELAY * 2);
   }
 
   clearPrevExchangeDisplays() {
@@ -89,17 +91,15 @@ export default class Fight extends Component {
         choices: [],
         exchangeWinner: null
       })
-    }, 1000);
+    }, TIMEOUT_DELAY);
 
-    if (player.turnType === 'insult') {
-      // TODO
-    } else {
+    if (player.turnType === 'comeback') {
       setTimeout(() => {
         this.setState({
           pirateMsg: this.pirate.msg,
-          playerMsg: ''
+          // playerMsg: ''
         })
-      }, 1800);
+      }, TIMEOUT_DELAY + 800);
     }
   }
 
@@ -146,7 +146,9 @@ export default class Fight extends Component {
       let winner = '';
       if (this.isMatch()) {
         winner = 'draw';
-        this.swapTurnTypes();
+        this.swapTurnTypes(); // TODO FIX: this causes pirate comeback
+                              // to appear above player insult
+
         player.roundPoints = 0;
         this.pirate.roundPoints = 0;
       } else {
@@ -166,7 +168,7 @@ export default class Fight extends Component {
       }
       this.clearPrevExchangeDisplays();
 
-    }, 500);
+    }, TIMEOUT_DELAY/2);
   }
 
   /**
@@ -192,9 +194,6 @@ export default class Fight extends Component {
     })
   }
 
-  // playerTurn(turnType) {
-  //   this.updatePlayerChoices(turnType);
-  // }
 
   /**
    * @desc Updates the player's choice in state based on option clicked
