@@ -1,4 +1,4 @@
-const knownInsults = {
+const starterInsults = {
   insults: [
   "You fight like a Dairy Farmer!",
   "This is the END for you, you gutter crawling cur!",
@@ -9,8 +9,9 @@ const knownInsults = {
     "How appropriate! You fight like a cow!",
     "And I've got a little TIP for you, get the POINT?",
     "Oh yeah?",
-    "I am rubber, you are glue."
+    "I am rubber, you are glue.",
+    "I'm shaking, I'm shaking."
   ]
 }
 
-export default knownInsults;
+export default starterInsults;
