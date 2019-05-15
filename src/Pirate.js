@@ -1,11 +1,20 @@
 import { randomIndex } from './helpers';
+import allInsults from './assets/insults.js';
 
 export default class Pirate {
-  constructor(turnType, allInsults) {
+  constructor(turnType) {
     this.msg = '';
-    this.insultPool = allInsults.map(i => i.insult); // the pool to start each round
+    this.insultPool = this.initPool(); // the pool to start each round
     this.turnType = 'comeback';
     this.roundPoints = 0;
+  }
+
+  /**
+ * @desc initialize each round's pool of insults for the pirate so they don't
+ * use repeat insults
+ */
+  initPool() {
+    return allInsults.map(i => i.insult);
   }
 
   insult() {
@@ -36,41 +45,30 @@ export default class Pirate {
      * @desc return the comeback that is paired with the player's chosen insult
      * @return {String} res - the correct comeback
      */
-  getCorrectResponse(allInsults, playerInsult) {
-// debugger
-    console.log('getting correct response')
+  getCorrectResponse(playerInsult) {
+    // console.log('getting correct response')
+
     const res = allInsults.filter(i => (
       i.insult === playerInsult
     ));
     return res[0].comeback;
   }
 
-  // getIncorrectResponse(allInsults, playerInsult) {
-  //   console.log('getting incorrect response')
-  //   let res = '';
-  //   do {
-  //     const index = randomIndex(allInsults.length);
-  //     res = allInsults[index];
-  //   } while (res.insult === playerInsult);
-
-  //   return res;
-  // }
-
   getIncorrectResponse() {
     let pool = [
       "Oh yeah?",
-      "I'm shaking, I'm shaking",
+      "I'm shaking, I'm shaking.",
       "I am rubber, you are glue."
     ];
 
     return pool[randomIndex(pool.length)];
   }
 
-  action(allInsults, playerInsult) {
+  action(playerInsult) {
     if (this.turnType === 'insult') {
       this.insult();
     } else {
-      this.comeback(allInsults, playerInsult);
+      this.comeback(playerInsult);
     }
   }
 }
