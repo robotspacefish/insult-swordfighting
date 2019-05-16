@@ -8,7 +8,7 @@ import Pirate from '../Pirate';
 import { player } from '../Player';
 import { delay } from '../helpers';
 
-const TIMEOUT_DELAY = 1800;
+const TIMEOUT_DELAY = 2000;
 
 export default class Fight extends Component {
   constructor(props) {
