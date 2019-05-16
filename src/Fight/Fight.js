@@ -159,7 +159,7 @@ export default class Fight extends Component {
   addIfUnknown(type, msg) {
     if (player.knownIC[type].indexOf(msg) === -1) {
       console.log(`learned ${type}: ${msg}`)
-      player.knownIC[type].push(msg);
+      player.knownIC[type] = player.updateKnownIC(type, msg);
     }
   }
 
