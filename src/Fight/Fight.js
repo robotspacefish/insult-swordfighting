@@ -25,7 +25,7 @@ export default class Fight extends Component {
     this.updateRound = this.updateRound.bind(this);
     this.winPrevExchange = null;
 
-    this.pirate = new Pirate('comeback');
+    this.pirate = new Pirate('comeback', this.props.round);
   }
 
   componentDidMount() {
@@ -36,8 +36,7 @@ export default class Fight extends Component {
   }
 
   initPirate() {
-    // create a new pirate
-    return new Pirate('comeback');
+    return new Pirate('comeback', this.props.round);
   }
 
   /**
