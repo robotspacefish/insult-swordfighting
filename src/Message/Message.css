@@ -1,4 +1,4 @@
-#message {
+.Message {
   color: orange;
   text-align: center;
   padding: 10px 0;
@@ -7,4 +7,8 @@
 
 #speaker-name {
   font-weight: bold;
+}
+
+.Message-Player {
+  color: yellow;
 }
