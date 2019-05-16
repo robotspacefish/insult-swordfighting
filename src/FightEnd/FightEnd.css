@@ -1,0 +1,17 @@
+.FightEnd {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 90px;
+}
+
+.FightEnd p {
+  font-size: 2em;
+  padding: 0;
+  text-transform: capitalize;
+}
+
+.FightEnd button {
+  margin: 40px auto;
+}

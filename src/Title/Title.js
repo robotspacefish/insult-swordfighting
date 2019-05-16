@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './Title.css';
 
 export default class Title extends Component {
-  static defaultProps = { modeToSet : 'turnStart'}
+  static defaultProps = { modeToSet : 'fightStart'}
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);

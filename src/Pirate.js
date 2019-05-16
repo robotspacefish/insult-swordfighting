@@ -2,12 +2,13 @@ import { randomIndex } from './helpers';
 import allInsults from './assets/insults.js';
 
 export default class Pirate {
-  constructor(turnType) {
+  constructor(turnType, round) {
     this.msg = '';
     this.insultPool = this.initPool(); // the pool to start each round
     this.turnType = 'comeback';
     this.roundPoints = 0;
     this.matchedComeback = false;
+    this.round = round;
   }
 
   /**
@@ -38,13 +39,16 @@ export default class Pirate {
     this.matchedComeback = false; // reset
 
     const correctChance = Math.random();
-    if (correctChance > 0.30) {
+    const difficulty = this.round < 4 ? 0.65 : 0.30
+    if (correctChance > difficulty) {
       this.msg = this.getCorrectResponse(playerInsult);
       this.matchedComeback = true;
     } else {
       this.msg = this.getIncorrectResponse();
     }
     // console.log('getting comeback:',this.msg)
+    console.log(this.round)
+    console.log(difficulty)
     return this.msg;
   }
 

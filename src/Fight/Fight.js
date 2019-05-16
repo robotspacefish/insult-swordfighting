@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import Images from '../Images/Images';
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Scroll from '../Scroll/Scroll';
-// import knownInsults from '../assets/knownInsults.js';
 import allInsults from '../assets/insults.js';
 import EndExchange from '../EndExchange/EndExchange';
+import FightEnd from '../FightEnd/FightEnd';
 import Pirate from '../Pirate';
 import { player } from '../Player';
-import { delay } from '../helpers';
 
-const TIMEOUT_DELAY = 1800;
+const TIMEOUT_DELAY = 2000;
 
 export default class Fight extends Component {
   constructor(props) {
@@ -25,9 +23,9 @@ export default class Fight extends Component {
     };
 
     this.updateRound = this.updateRound.bind(this);
-    this.winPrevExchange = null;
-
-    this.pirate = new Pirate('comeback');
+    this.initNextRound = this.initNextRound.bind(this);
+    this.props.updateFightCounter();
+    this.pirate = new Pirate('comeback', this.props.round);
   }
 
   componentDidMount() {
@@ -37,11 +35,28 @@ export default class Fight extends Component {
   componentDidUpdate(prevProps, prevState) {
   }
 
+  /**
+   * @desc Create a new pirate
+   * @return {Object} Pirate
+   */
   initPirate() {
-    // create a new pirate
-    return new Pirate('comeback');
+    return new Pirate('comeback', this.props.round);
   }
 
+  /**
+   * @desc initialize everything needed for a new fight round
+   */
+  initNextRound() {
+    this.initPirate();
+    this.setState({
+      roundWinner : null,
+      exchangeWinner : null,
+      playerMsg : '',
+      pirateMsg : ''
+     });
+
+     player.reset();
+  }
   /**
    * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
    * @return {Number} matched.length
@@ -87,12 +102,8 @@ export default class Fight extends Component {
     }
   }
 
-  checkForWinner() {
-    if (this.winPrevExchange === 'player') {
-      console.log('*** player wins round ***')
-    } else if (this.winPrevExchange === 'pirate') {
-      console.log('*** pirate wins round ***')
-    }
+  isFightWon() {
+    return player.roundPoints === 2 || this.pirate.roundPoints === 2;
   }
 
   /**
@@ -132,12 +143,14 @@ export default class Fight extends Component {
 
       this.addICToKnown(prevPirateTurnType);
 
-      // if (player.roundPoints === 2 || this.pirate.roundPoints === 2) {
-        // this.endRound(winner);
-      // } else {
+
+      if (this.isFightWon()) {
+        this.endRound(winner);
+        return;
+      } else {
         this.setState({ exchangeWinner: winner });
         this.nextExchange();
-      // }
+      }
       this.clearPrevExchangeDisplays();
 
     }, TIMEOUT_DELAY/2);
@@ -146,7 +159,7 @@ export default class Fight extends Component {
   addIfUnknown(type, msg) {
     if (player.knownIC[type].indexOf(msg) === -1) {
       console.log(`learned ${type}: ${msg}`)
-      player.knownIC[type].push(msg);
+      player.knownIC[type] = player.updateKnownIC(type, msg);
     }
   }
 
@@ -180,29 +193,46 @@ export default class Fight extends Component {
     })
   }
 
-  render() {
-    // console.log('FIGHT: render()')
-    return (
-      <div className="Fight container">
-        {/* <Images /> */}
-        <Messages
-           playerMsg={this.state.playerMsg}
-           pirateMsg={this.state.pirateMsg}
-           playerTurnType={player.turnType}
-         />
-        {
-          this.state.exchangeWinner !== null &&
-          <EndExchange
-            winner={this.state.exchangeWinner}
-            turnType={player.turnType}
+  renderContent() {
+    if (this.state.roundWinner !== null) {
+      return (<FightEnd
+        updateMode={this.props.updateMode}
+        winner={this.state.roundWinner}
+        initNextRound={this.initNextRound}
+        />);
+    } else {
+      return (
+        <div>
+          <Messages
+            playerMsg={this.state.playerMsg}
+            pirateMsg={this.state.pirateMsg}
+            playerTurnType={player.turnType}
           />
-        }
-         <Scroll>
-          <Choices
+
+          {
+            this.state.exchangeWinner !== null &&
+            <EndExchange
+              winner={this.state.exchangeWinner}
+              turnType={player.turnType}
+            />
+          }
+
+          <Scroll>
+            <Choices
               choices={this.state.choices}
               updateRound={this.updateRound}
-          />
-        </Scroll>
+            />
+          </Scroll>
+        </div>
+      )
+    }
+
+  }
+
+  render() {
+    return (
+      <div className="Fight container">
+        {this.renderContent()}
       </div>
     )
   }

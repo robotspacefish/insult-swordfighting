@@ -8,14 +8,18 @@ class Player {
     this.roundPoints = 0;
   }
 
-  setChoices() {
-    let type = `${this.turnType}s`;
-    return this.state.knownInsults[type].map(i => i) ;
+  reset() {
+    this.turnType = 'insult';
+    this.msg = 0;
+    this.roundPoints = 0;
   }
 
-  updateKnownIC(newIC) {
-    this.knownIC.insults = [...this.knownIC.insults, ...newIC.insults];
-    this.knownIC.comebacks = [...this.knownIC.comebacks, ...newIC.comebacks];
+  updateKnownIC(type, msg) {
+    const index = type === 'insults' ? -2 : -3;
+    let newIC = [...this.knownIC[type]];
+    newIC.splice(index, 0, msg);
+
+    return newIC;
   }
 
   updateChoices() {

@@ -5,3 +5,8 @@
   margin: 6px 0;
   font-size: 1.1em;
 }
+
+.EndExchange-player-win {
+  color : yellow;
+  border-color: yellow;
+}

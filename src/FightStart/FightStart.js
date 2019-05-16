@@ -15,7 +15,7 @@ export default class FightStart extends Component {
   render() {
     return (
       <div className="FightStart container">
-        <h1>{this.props.turn} Start</h1>
+        <h1>Fight {this.props.fightCounter} Begin!</h1>
       </div>
     )
   }
