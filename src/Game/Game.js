@@ -3,7 +3,6 @@ import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import FightStart from '../FightStart/FightStart';
 import FightEnd from '../FightEnd/FightEnd';
-// import Greet from '../Greet/Greet';
 import Fight from '../Fight/Fight';
 import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
@@ -15,14 +14,19 @@ export default class Game extends Component {
     this.state = {
       mode: 'fight',
       showInstructions : false,
-      roundCounter : 1
+      fightCounter : 1
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
+    this.updateFightCounter = this.updateFightCounter.bind(this);
   }
 
   updateMode(mode) {
     this.setState({ mode })
+  }
+
+  updateFightCounter() {
+    this.setState(st => ({ fightCounter : st.fightCounter + 1 }));
   }
 
   handleShowInstructions(evt) {
@@ -47,6 +51,7 @@ export default class Game extends Component {
                 updateMode={this.updateMode}
                 updatePlayerTurn={this.updatePlayerTurn}
                 updateRoundWin={this.updateRoundWin}
+                updateFightCounter={this.updateFightCounter}
       />
     };
   }
