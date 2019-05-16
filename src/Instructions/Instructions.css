@@ -1,12 +1,14 @@
 .Instructions {
   position: absolute;
   min-height: auto;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  background: #ff5d42;
+  border-radius: 15px;
   height: auto;
-  top: 60px;
+  top: 80px;
   animation: dropdown 400ms;
   animation-timing-function: ease;
+  line-height: 1.6em;
 }
 
 @keyframes dropdown {
@@ -17,4 +19,8 @@
 @keyframes pullup {
   from { top: 60px; }
   to { top: -1000px; }
+}
+
+.Instructions h2 {
+  text-align: center;
 }

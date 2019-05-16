@@ -5,8 +5,15 @@
 
 #Game-instructions-btn {
   z-index: 2;
-  margin: 20px 20px 60px;
+  margin: 15px auto;
   justify-self: flex-end;
   align-self: flex-end;
   max-width: 250px;
+  background: black;
+}
+
+@media screen and (min-width: 768px) {
+  #Game-instructions-btn {
+    margin: 20px 20px 60px;
+  }
 }

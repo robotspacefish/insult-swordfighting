@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Choice.css';
 
 export default class Choice extends Component {
   constructor(props) {
@@ -11,9 +12,9 @@ export default class Choice extends Component {
   }
   render() {
     return (
-      <button onClick={this.handleClick} disabled={this.props.isChoiceMade}>
-        <div className="hovered-choice"></div>
-        {this.props.choice}
+      <button className="Choice" onClick={this.handleClick} disabled={this.props.isChoiceMade}>
+        <div className="Choice-hovered-choice"></div>
+        <div className="Choice-text">{this.props.choice}</div>
       </button>
     )
   }

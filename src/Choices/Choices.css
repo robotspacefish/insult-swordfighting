@@ -4,8 +4,7 @@
   padding-top: 10px;
 }
 
-
-#player-choices button {
+/* #player-choices button {
   color: white;
   background: none;
   border: none;
@@ -22,16 +21,6 @@
   font-weight: initial;
 }
 
-.hovered-choice {
-  width: 10px;
-  height: 10px;
-  background-color: white;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 10px;
-  visibility: hidden;
-}
-
 #player-choices button:hover {
   font-weight: bold;
   color: yellow;
@@ -39,4 +28,4 @@
 
 #player-choices button:hover .hovered-choice {
   visibility: visible;
-}
+} */
