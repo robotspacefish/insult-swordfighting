@@ -23,7 +23,7 @@ button {
 }
 
 .btn {
-  padding: 0.5rem 2.5rem;
+  padding: 10px 20px;
   margin: 150px 0;
   border-radius: 15px;
   font-size: 1.2em;
@@ -31,6 +31,7 @@ button {
   background: none;
   color: white;
   transition: background 500ms;
+  font-family: inherit;
 }
 
 .btn:hover {
