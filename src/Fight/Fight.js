@@ -116,6 +116,11 @@ export default class Fight extends Component {
 
     const prevPirateTurnType = this.pirate.turnType;
 
+    if (player.turnType === 'insult') {
+      this.pirate.removeInsultSpokenByPlayer(player.msg);
+      console.log(this.pirate.insultPool)
+    }
+
     if (this.pirate.turnType === 'comeback') {
       this.pirate.comeback(player.msg);
     }

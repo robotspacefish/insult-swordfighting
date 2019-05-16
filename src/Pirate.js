@@ -75,6 +75,13 @@ export default class Pirate {
     return pool[randomIndex(pool.length)];
   }
 
+  /**
+   * @desc remove an insult the player used so there's more variety
+   */
+  removeInsultSpokenByPlayer(insult) {
+    this.insultPool = this.insultPool.filter(i => i !== insult );
+  }
+
   action(playerInsult) {
     if (this.turnType === 'insult') {
       this.insult();
