@@ -35,10 +35,28 @@ export default class Fight extends Component {
   componentDidUpdate(prevProps, prevState) {
   }
 
+  /**
+   * @desc Create a new pirate
+   * @return {Object} Pirate
+   */
   initPirate() {
     return new Pirate('comeback', this.props.round);
   }
 
+  /**
+   * @desc initialize everything needed for a new fight round
+   */
+  initNextRound() {
+    this.initPirate();
+    this.setState({
+      roundWinner : null,
+      exchangeWinner : null,
+      playerMsg : '',
+      pirateMsg : ''
+     });
+
+     player.reset();
+  }
   /**
    * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
    * @return {Number} matched.length
