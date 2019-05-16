@@ -6,8 +6,9 @@
 }
 
 .container {
-  width: 100%;
+  width: 96%;
   flex: 1;
+  align-self: center;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1%;

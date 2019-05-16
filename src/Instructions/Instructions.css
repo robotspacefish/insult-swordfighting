@@ -2,14 +2,12 @@
   position: absolute;
   min-height: auto;
   padding: 20px;
-  /* background: rgba(0, 0, 0, 0.8); */
   background: #ff5d42;
   border-radius: 15px;
   height: auto;
   top: 80px;
   animation: dropdown 400ms;
   animation-timing-function: ease;
-  /* border: 4px double #ff5d42;   */
   line-height: 1.6em;
 }
 
@@ -21,4 +19,8 @@
 @keyframes pullup {
   from { top: 60px; }
   to { top: -1000px; }
+}
+
+.Instructions h2 {
+  text-align: center;
 }

@@ -1,0 +1,48 @@
+.Choice {
+  display: flex;
+  align-items: center;
+  color: white;
+  background: none;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: left;
+  padding: 5px 0;
+  margin: 5px 0;
+}
+
+.Choice-hovered-choice {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  margin-right: 10px;
+  visibility: hidden;
+}
+
+.Choice-text {
+  width: 96%;
+}
+
+.Choice:disabled,
+.Choice:hover:disabled {
+  color: grey;
+  font-weight: initial;
+}
+
+.Choice:hover {
+  font-weight: bold;
+  color: yellow;
+}
+
+.Choice:hover .Choice-hovered-choice {
+  visibility: visible;
+}
+
+
+@media screen and (min-width: 768px) {
+  .Choice-hovered-choice {
+    width: 10px;
+    height: 10px;
+  }
+}
