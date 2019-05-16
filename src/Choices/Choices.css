@@ -3,29 +3,3 @@
   flex-direction: column;
   padding-top: 10px;
 }
-
-/* #player-choices button {
-  color: white;
-  background: none;
-  border: none;
-  font-size: inherit;
-  font-family: inherit;
-  text-align: left;
-  padding: 5px 0;
-  margin: 5px 0;
-}
-
-#player-choices button:disabled,
-#player-choices button:hover:disabled {
-  color: grey;
-  font-weight: initial;
-}
-
-#player-choices button:hover {
-  font-weight: bold;
-  color: yellow;
-}
-
-#player-choices button:hover .hovered-choice {
-  visibility: visible;
-} */
