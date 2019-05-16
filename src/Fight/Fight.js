@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import Images from '../Images/Images';
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Scroll from '../Scroll/Scroll';
-// import knownInsults from '../assets/knownInsults.js';
 import allInsults from '../assets/insults.js';
 import EndExchange from '../EndExchange/EndExchange';
 import Pirate from '../Pirate';
@@ -184,7 +182,6 @@ export default class Fight extends Component {
     // console.log('FIGHT: render()')
     return (
       <div className="Fight container">
-        {/* <Images /> */}
         <Messages
            playerMsg={this.state.playerMsg}
            pirateMsg={this.state.pirateMsg}
