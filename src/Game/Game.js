@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import FightStart from '../FightStart/FightStart';
-import FightEnd from '../FightEnd/FightEnd';
+// import FightEnd from '../FightEnd/FightEnd';
 import Fight from '../Fight/Fight';
 import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
@@ -43,15 +43,19 @@ export default class Game extends Component {
   renderMode() {
     let mode = this.state.mode;
     if (mode === 'title') return <Title updateMode={this.updateMode} />;
-    else if (mode === 'fightStart') return <FightStart updateMode={this.updateMode} turn={this.state.turn} />;
-    else if (mode === 'fightEnd') return <FightEnd updateMode={this.updateMode} turn={this.state.turn} />;
-    // else if (mode === 'greet') return <Greet updateMode={this.updateMode} />;
+    else if (mode === 'fightStart')  {
+      return <FightStart
+                updateMode={this.updateMode}
+                fightCounter={this.state.fightCounter}
+              />
+    }
     else if (mode === 'fight') {
       return <Fight
                 updateMode={this.updateMode}
                 updatePlayerTurn={this.updatePlayerTurn}
                 updateRoundWin={this.updateRoundWin}
                 updateFightCounter={this.updateFightCounter}
+                round={this.state.fightCounter}
       />
     };
   }
@@ -59,7 +63,7 @@ export default class Game extends Component {
     return (
       <div className="Game container">
 
-        {/* <Debug  updateMode={this.updateMode} /> */}
+        <Debug  updateMode={this.updateMode} />
 
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>
