@@ -8,6 +8,12 @@ class Player {
     this.roundPoints = 0;
   }
 
+  reset() {
+    this.turnType = 'insult';
+    this.msg = 0;
+    this.roundPoints = 0;
+  }
+
   setChoices() {
     let type = `${this.turnType}s`;
     return this.state.knownInsults[type].map(i => i) ;
