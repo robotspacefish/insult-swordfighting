@@ -1,12 +1,16 @@
 .Instructions {
   position: absolute;
   min-height: auto;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  /* background: rgba(0, 0, 0, 0.8); */
+  background: #ff5d42;
+  border-radius: 15px;
   height: auto;
-  top: 60px;
+  top: 80px;
   animation: dropdown 400ms;
   animation-timing-function: ease;
+  /* border: 4px double #ff5d42;   */
+  line-height: 1.6em;
 }
 
 @keyframes dropdown {

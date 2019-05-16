@@ -29,5 +29,5 @@ button {
 }
 
 .btn:hover {
-  background: #ff5d42;
+  background: #ff5d42 !important;
 }
