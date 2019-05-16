@@ -1,0 +1,21 @@
+.Info {
+  text-align: center;
+  padding: 40px 0;
+  line-height: 1.6em;
+  font-size: 0.9em;
+}
+
+.Info a {
+  color: #ff5d42;
+  /* text-decoration: none; */
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.Info span a {
+  color: white;
+}
+
+.Info span a:hover {
+  color: #ff5d42;
+}
