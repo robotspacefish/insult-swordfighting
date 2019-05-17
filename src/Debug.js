@@ -10,6 +10,7 @@ export default class Debug extends Component {
         <button onClick={() => this.props.updateMode('fightStart')}>FightStart Mode</button>
         <button onClick={() => this.props.updateMode('fight')}>Fight Mode</button>
         <button onClick={() => this.props.updateMode('fightEnd')}>FightEnd Mode</button>
+        <button onClick={() => this.props.updateMode('win')}>Win Mode</button>
       </div>
     )
   }
