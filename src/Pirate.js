@@ -31,7 +31,6 @@ export default class Pirate {
     this.msg = pool[randomIndex(pool.length)];
     this.insultPool = pool.filter(i => i !== this.msg);
 
-    // console.log('getting insult', this.msg)
     return this.msg;
   }
 
@@ -39,16 +38,15 @@ export default class Pirate {
     this.matchedComeback = false; // reset
 
     const correctChance = Math.random();
-    const difficulty = this.round < 4 ? 0.65 : 0.30
+    const difficulty = this.round < 4 ? 0.65 : 0.30;
+
     if (correctChance > difficulty) {
       this.msg = this.getCorrectResponse(playerInsult);
       this.matchedComeback = true;
     } else {
       this.msg = this.getIncorrectResponse();
     }
-    // console.log('getting comeback:',this.msg)
-    console.log(this.round)
-    console.log(difficulty)
+
     return this.msg;
   }
 
@@ -57,12 +55,16 @@ export default class Pirate {
      * @return {String} res - the correct comeback
      */
   getCorrectResponse(playerInsult) {
-    // console.log('getting correct response')
-
     const res = allInsults.filter(i => (
       i.insult === playerInsult
     ));
-    return res[0].comeback;
+
+    if (res.length === 0) {
+      // if player's insult isn't one of the matching insult/comebacks
+      return this.getIncorrectResponse();
+    } else {
+      return res[0].comeback;
+    }
   }
 
   getIncorrectResponse() {
@@ -71,8 +73,9 @@ export default class Pirate {
       "I'm shaking, I'm shaking.",
       "I am rubber, you are glue."
     ];
-
-    return pool[randomIndex(pool.length)];
+    let index = randomIndex(pool.length);
+    let res = pool[index];
+    return res ;
   }
 
   /**
