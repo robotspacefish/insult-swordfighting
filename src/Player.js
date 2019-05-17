@@ -27,6 +27,18 @@ class Player {
       ? 'insults' : 'comebacks';
     return [...this.knownIC[type]];
   }
+
+  /**
+   * @desc Check if the player uses a nonsense insult that has no
+   * matching comeback, ex. 'Oh yeah?'
+   * @return {Boolean} index of the insult in the player's known insults
+   * being one of the nonsense insults or not
+   */
+  isNonsenseInsult() {
+    let index = this.knownIC.insults.indexOf(this.msg)
+    return index >= this.knownIC.insults.length - 2;
+  }
+
 }
 
 const player = new Player(Object.assign({}, starterInsults));

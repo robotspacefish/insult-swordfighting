@@ -129,7 +129,8 @@ export default class Fight extends Component {
       this.setState({ pirateMsg : this.pirate.msg });
 
       let winner = '';
-      if (this.isMatch()) {
+
+      if (this.isMatch() || player.isNonsenseInsult()) {
         winner = 'draw';
         this.swapTurnTypes(); // TODO FIX: this causes pirate comeback
                               // to appear above player insult
