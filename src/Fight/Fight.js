@@ -33,6 +33,7 @@ export default class Fight extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log(player)
   }
 
   /**
@@ -65,14 +66,12 @@ export default class Fight extends Component {
     // TODO refactor with find?
 
     const matched = allInsults.filter(i => {
-
       return i[player.turnType] === player.msg && i[this.pirate.turnType] === this.pirate.msg;
     });
-
     return matched.length > 0;
   }
 
-  nextExchange() {
+    nextExchange() {
     this.pirate.turnType === 'insult' && this.pirate.insult();
 
     // set choices
@@ -118,7 +117,6 @@ export default class Fight extends Component {
 
     if (player.turnType === 'insult') {
       this.pirate.removeInsultSpokenByPlayer(player.msg);
-      console.log(this.pirate.insultPool)
     }
 
     if (this.pirate.turnType === 'comeback') {
@@ -134,7 +132,6 @@ export default class Fight extends Component {
         winner = 'draw';
         this.swapTurnTypes(); // TODO FIX: this causes pirate comeback
                               // to appear above player insult
-
         player.roundPoints = 0;
         this.pirate.roundPoints = 0;
       } else {
@@ -149,8 +146,10 @@ export default class Fight extends Component {
 
       this.addICToKnown(prevPirateTurnType);
 
-
-      if (this.isFightWon()) {
+      if (this.isGameWon()) {
+        this.props.updateMode('win');
+        return;
+      } else if (this.isFightWon()) {
         this.endRound(winner);
         return;
       } else {
@@ -197,6 +196,16 @@ export default class Fight extends Component {
     this.setState({
       roundWinner : winner
     })
+  }
+
+  isGameWon() {
+    const len = allInsults.length;
+    // + 2 and + 3 are nonsense insults/comebacks with no pair
+    console.log('insults:', player.knownIC.insults.length-2)
+    console.log('comebacks:', player.knownIC.comebacks.length-3)
+    let res = (player.knownIC.insults.length === len + 2)
+      && (player.knownIC.comebacks.length === len + 3)
+    return res;
   }
 
   renderContent() {

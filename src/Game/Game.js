@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Instructions from '../Instructions/Instructions';
 import Title from '../Title/Title';
 import FightStart from '../FightStart/FightStart';
-// import FightEnd from '../FightEnd/FightEnd';
 import Fight from '../Fight/Fight';
+import Win from '../Win/Win';
 import Debug from '../Debug';
 // import ProgressBar from '../ProgressBar/ProgressBar';
 import './Game.css';
@@ -14,7 +14,7 @@ export default class Game extends Component {
     this.state = {
       mode: 'fight',
       showInstructions : false,
-      fightCounter : 1
+      fightCounter : 1,
     }
     this.updateMode = this.updateMode.bind(this);
     this.handleShowInstructions = this.handleShowInstructions.bind(this);
@@ -56,14 +56,18 @@ export default class Game extends Component {
                 updateRoundWin={this.updateRoundWin}
                 updateFightCounter={this.updateFightCounter}
                 round={this.state.fightCounter}
+                gameWon={this.gameWon}
       />
-    };
+    }
+    else if (mode === 'win') {
+      return <Win />
+    }
   }
   render() {
     return (
       <div className="Game container">
 
-        <Debug  updateMode={this.updateMode} />
+        {/* <Debug  updateMode={this.updateMode} /> */}
 
         <button className="btn" id="Game-instructions-btn"
           onClick={this.handleShowInstructions}>

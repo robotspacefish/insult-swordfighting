@@ -1,0 +1,16 @@
+.Win {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Win h1 {
+  text-align: center;
+  font-size: 4em;
+  margin: 20px 0;
+}
+
+.Win p {
+  font-size: 1.2em;
+}
