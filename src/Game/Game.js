@@ -5,7 +5,6 @@ import FightStart from '../FightStart/FightStart';
 import Fight from '../Fight/Fight';
 import Win from '../Win/Win';
 import Debug from '../Debug';
-// import ProgressBar from '../ProgressBar/ProgressBar';
 import './Game.css';
 
 export default class Game extends Component {
