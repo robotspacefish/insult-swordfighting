@@ -7,10 +7,21 @@ import EndExchange from '../EndExchange/EndExchange';
 import FightEnd from '../FightEnd/FightEnd';
 import Pirate from '../Pirate';
 import { player } from '../Player';
+import { delay } from '../helpers';
 
 const TIMEOUT_DELAY = 3000;
 
 export default class Fight extends Component {
+  /**
+   *
+   * @param {Object} props - properties passed from Game component
+   * newRound
+   * exchangeWinner
+   * roundWinner
+   * choices
+   * playerMsg
+   * pirateMsg
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -24,16 +35,17 @@ export default class Fight extends Component {
 
     this.updateRound = this.updateRound.bind(this);
     this.initNextRound = this.initNextRound.bind(this);
+    this.updatePlayerChoices = this.updatePlayerChoices.bind(this);
+    this.clearPrevExchangeDisplays = this.clearPrevExchangeDisplays.bind(this);
     this.props.updateFightCounter();
-    this.pirate = new Pirate('comeback', this.props.round);
+    this.pirate = new Pirate(this.props.round);
   }
 
   componentDidMount() {
-    this.setState({ choices : player.updateChoices() })
+    this.updatePlayerChoices();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(player)
   }
 
   /**
@@ -41,7 +53,7 @@ export default class Fight extends Component {
    * @return {Object} Pirate
    */
   initPirate() {
-    return new Pirate('comeback', this.props.round);
+    return new Pirate(this.props.round);
   }
 
   /**
@@ -71,36 +83,35 @@ export default class Fight extends Component {
     return matched.length > 0;
   }
 
-    nextExchange() {
-    this.pirate.turnType === 'insult' && this.pirate.insult();
 
-    // set choices
-    setTimeout(() => {
-      this.setState({ choices: player.updateChoices() });
-    }, TIMEOUT_DELAY * 2);
+  /**
+   * @desc Set the player's choices in state
+   */
+  updatePlayerChoices() {
+    this.setState({ choices: player.updateChoices() });
   }
 
+  /**
+   * @desc Clear the messages, previous player choices, and exchange
+   * winner in state
+   */
   clearPrevExchangeDisplays() {
+    // TODO: BUG when a comeback is correct, the response appears above the insult
     // clear messages and choices
-    setTimeout(() => {
+      console.log('clearPrevExchangeDisplays')
+      const pirateMsg = player.turnType === 'comeback' ? this.pirate.msg : '';
       this.setState({
-        pirateMsg: '',
+        pirateMsg: pirateMsg,
         playerMsg: '',
         choices: [],
         exchangeWinner: null
       })
-    }, TIMEOUT_DELAY);
-
-    if (player.turnType === 'comeback') {
-      setTimeout(() => {
-        this.setState({
-          pirateMsg: this.pirate.msg,
-          // playerMsg: ''
-        })
-      }, TIMEOUT_DELAY + 800);
-    }
   }
 
+  /**
+   * @desc checks to see if either the player or pirate have 2 points
+   * @return {Boolean}
+   */
   isFightWon() {
     return player.roundPoints === 2 || this.pirate.roundPoints === 2;
   }
@@ -123,22 +134,24 @@ export default class Fight extends Component {
       this.pirate.comeback(player.msg);
     }
 
-    setTimeout(() => {
+    delay(() => {
       this.setState({ pirateMsg : this.pirate.msg });
 
       let winner = '';
 
       if (this.isMatch() || player.isNonsenseInsult()) {
+        console.log('draw, swap turn types')
         winner = 'draw';
-        this.swapTurnTypes(); // TODO FIX: this causes pirate comeback
-                              // to appear above player insult
+        this.swapTurnTypes();
         player.roundPoints = 0;
         this.pirate.roundPoints = 0;
       } else {
         if (player.turnType === 'insult') {
+          console.log('player wins')
           winner = 'player';
           player.roundPoints++;
         } else {
+          console.log('pirate wins')
           winner = 'pirate';
           this.pirate.roundPoints++;
         }
@@ -154,10 +167,12 @@ export default class Fight extends Component {
         return;
       } else {
         this.setState({ exchangeWinner: winner });
-        this.nextExchange();
-      }
-      this.clearPrevExchangeDisplays();
 
+        // set up next exchange
+        this.pirate.turnType === 'insult' && this.pirate.insult();
+        delay(this.updatePlayerChoices, TIMEOUT_DELAY * 1.3);
+        delay(this.clearPrevExchangeDisplays, TIMEOUT_DELAY / 2)
+      }
     }, TIMEOUT_DELAY/2);
   } // end updateRound() ==============================================
 
@@ -191,6 +206,7 @@ export default class Fight extends Component {
   }
 
   endRound(winner) {
+    console.log('endRound')
     // set newRound to true and/or set up new round with function
     // set exchangeWinner to display
     this.setState({
@@ -201,8 +217,6 @@ export default class Fight extends Component {
   isGameWon() {
     const len = allInsults.length;
     // + 2 and + 3 are nonsense insults/comebacks with no pair
-    console.log('insults:', player.knownIC.insults.length-2)
-    console.log('comebacks:', player.knownIC.comebacks.length-3)
     let res = (player.knownIC.insults.length === len + 2)
       && (player.knownIC.comebacks.length === len + 3)
     return res;
