@@ -15,17 +15,15 @@ export default class Fight extends Component {
   /**
    *
    * @param {Object} props - properties passed from Game component
-   * newRound
-   * exchangeWinner
-   * roundWinner
-   * choices
-   * playerMsg
-   * pirateMsg
+   * {String} exchangeWinner - who wins each exchange ('player' or 'pirate')
+   * {String} roundWinner - who wins each round ('player' or 'pirate')
+   * {Array} choices - the player's insults or comebacks to choose from
+   * {String} playerMsg - the player's chosen insult or comeback
+   * {String} pirateMsg - the pirate's randomly selected insult or comeback
    */
   constructor(props) {
     super(props);
     this.state = {
-      newRound : false,
       exchangeWinner: null,
       roundWinner : null,
       choices: [],
@@ -70,13 +68,12 @@ export default class Fight extends Component {
 
      player.reset();
   }
+
   /**
    * @desc Check if player's insult/comeback is correct with the pirate's insult/comeback
    * @return {Number} matched.length
    */
   isMatch() {
-    // TODO refactor with find?
-
     const matched = allInsults.filter(i => {
       return i[player.turnType] === player.msg && i[this.pirate.turnType] === this.pirate.msg;
     });
@@ -176,20 +173,28 @@ export default class Fight extends Component {
     }, TIMEOUT_DELAY/2);
   } // end updateRound() ==============================================
 
-  addIfUnknown(type, msg) {
-    if (player.knownIC[type].indexOf(msg) === -1) {
-      console.log(`learned ${type}: ${msg}`)
-      player.knownIC[type] = player.updateKnownIC(type, msg);
-    }
-  }
-
+  /**
+   * @desc if the insult/comeback is new to the player's list, run addIfUnknown to add it
+   * @param {String} type 'insult' or 'comeback'
+   */
   addICToKnown(type) {
-    // add new insult/comeback if possible
     if (type === 'comeback' && this.pirate.matchedComeback) {
       this.addIfUnknown('comebacks', this.pirate.msg);
     }
     if (type === 'insult') {
       this.addIfUnknown('insults', this.pirate.msg);
+    }
+  }
+
+  /**
+   * @desc Add the new insult/comeback to the player's known insults/comebacks
+   * @param {String} type - 'insult' or 'comeback'
+   * @param {String} msg  - the insult or comeback to add
+   */
+  addIfUnknown(type, msg) {
+    if (player.knownIC[type].indexOf(msg) === -1) {
+      console.log(`learned ${type}: ${msg}`)
+      player.knownIC[type] = player.updateKnownIC(type, msg);
     }
   }
 
@@ -205,15 +210,20 @@ export default class Fight extends Component {
     console.log('swapping:', player.turnType)
   }
 
+  /**
+   * @desc Set the round winner in state
+   * @param {String} winner - 'player' or 'pirate'
+   */
   endRound(winner) {
     console.log('endRound')
-    // set newRound to true and/or set up new round with function
-    // set exchangeWinner to display
-    this.setState({
-      roundWinner : winner
-    })
+    this.setState({ roundWinner : winner })
   }
 
+  /**
+   * @desc check if the player's list of insults/comebacks contains all
+   * of the possible choices, aside from the nonsense choices
+   * @return {Boolean}
+   */
   isGameWon() {
     const len = allInsults.length;
     // + 2 and + 3 are nonsense insults/comebacks with no pair
@@ -222,6 +232,11 @@ export default class Fight extends Component {
     return res;
   }
 
+  /**
+   * @desc render Fight content or FightEnd
+   * @return {Object} FightEnd component
+   * @return div containing Fight content
+   */
   renderContent() {
     if (this.state.roundWinner !== null) {
       return (<FightEnd
