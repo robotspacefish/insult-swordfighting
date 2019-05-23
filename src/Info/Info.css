@@ -1,9 +1,10 @@
 .Info {
   text-align: center;
-  padding: 40px 0;
   line-height: 1.6em;
   font-size: 0.9em;
   animation: fadein 13s;
+  margin-top: 80px;
+  border-top: 1px solid #222;
 }
 
 .Info a {
