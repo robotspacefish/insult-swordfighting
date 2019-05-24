@@ -55,3 +55,8 @@ button {
 .btn:hover {
   background: #ff5d42 !important;
 }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}

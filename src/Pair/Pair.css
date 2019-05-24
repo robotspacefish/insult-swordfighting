@@ -1,0 +1,21 @@
+.Pair {
+  padding: 10px 0;
+  border-bottom: 1px solid #ff5d42;
+}
+
+.Pair:last-child {
+  border-bottom: none;
+}
+
+.Pair span {
+  width: 25px;
+  height: 100%;
+  margin-right: 5px;
+  font-weight: 700;
+}
+
+.Pair li {
+  margin: 10px 5px;
+  display: flex;
+  align-items: center;
+}

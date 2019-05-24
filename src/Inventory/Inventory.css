@@ -1,0 +1,40 @@
+.Inventory {
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  background: #FF7A64;
+}
+
+#Inventory-visibility-btn {
+  background: #FF7A64;
+  border: none;
+  border-bottom: 1px solid #ff5d42;
+  font-size: 1em;
+  font-family: inherit;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: inherit;
+  width: 100%;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#Inventory-visibility-btn span {
+  padding: 0 10px;
+  font-size: 1.2em;
+}
+
+.Inventory-total-pairs {
+  font-weight: 700;
+}
+
+@media screen and (min-width: 768px) {
+  #Inventory-visibility-btn {
+    width: 300px;
+    align-self: flex-end;
+  }
+
+
+}

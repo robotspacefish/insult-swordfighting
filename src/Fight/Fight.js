@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
+import Inventory from '../Inventory/Inventory';
 import Scroll from '../Scroll/Scroll';
 import allInsults from '../assets/insults.js';
 import EndExchange from '../EndExchange/EndExchange';
@@ -8,6 +9,7 @@ import FightEnd from '../FightEnd/FightEnd';
 import Pirate from '../Pirate';
 import { player } from '../Player';
 import { delay } from '../helpers';
+import './Fight.css';
 
 const TIMEOUT_DELAY = 3000;
 
@@ -246,7 +248,7 @@ export default class Fight extends Component {
         />);
     } else {
       return (
-        <div>
+        <div className="Fight-content">
           <Messages
             playerMsg={this.state.playerMsg}
             pirateMsg={this.state.pirateMsg}
@@ -267,6 +269,11 @@ export default class Fight extends Component {
               updateRound={this.updateRound}
             />
           </Scroll>
+          <Inventory
+            toggleInventory={this.props.toggleInventory}
+            allInsults={allInsults}
+            knownIC={player.knownIC}
+          />
         </div>
       )
     }
