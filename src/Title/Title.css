@@ -25,6 +25,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .Title {
+    min-height: 0;
+  }
+
   .Title h1 {
     font-size: 3.5em;
   }
