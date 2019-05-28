@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Pair from '../Pair/Pair';
-import Scroll from '../Scroll/Scroll';
 import './Inventory.css';
 
 export default class Inventory extends Component {
