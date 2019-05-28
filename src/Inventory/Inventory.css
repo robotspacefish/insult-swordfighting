@@ -1,5 +1,4 @@
 .Inventory {
-  margin: 40px 0;
   max-width: 500px;
   background: #FF7A64;
   border: 4px solid #ff5d42;
@@ -44,7 +43,6 @@
 
 @media screen and (min-width: 768px) {
     .Inventory {
-      grid-area: inventory;
       align-self: start;
       margin: 0 auto;
       max-height: 500px;

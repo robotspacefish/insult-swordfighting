@@ -3,14 +3,51 @@
   flex-direction: column;
 }
 
+.Fight section {
+  margin: 10px 0;
+}
+
+.Fight-Messages {
+  min-height: 100px;
+  border-bottom: 1px solid white;
+  grid-area: messages;
+}
+
+.Fight-Exchange-Info {
+  text-align: center;
+  color : #FFA500;
+  border: 1px solid #FFA500;
+  margin: 6px 0;
+  font-size: 1.1em;
+  grid-area: exchange-info;
+}
+
+.Fight-Exchange-Info p {
+  margin: 10px 0;
+}
+
+.Fight-Choices {
+  min-height: 230px;
+  grid-area: choices;
+}
+
+.Fight-Inventory {
+  grid-area: inventory;
+}
+
 @media screen and (min-width: 768px) {
+  .Fight section {
+    margin: 0;
+  }
+
   .Fight-content {
     display: grid !important;
     grid-template-columns: 60% 40%;
     grid-template-rows: auto;
-    grid-row-gap: 20px;
+    grid-gap: 20px;
     grid-template-areas:
       'messages messages'
-      'scroll-messages inventory'
+      'exchange-info exchange-info'
+      'choices inventory'
   }
 }

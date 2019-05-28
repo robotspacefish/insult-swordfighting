@@ -234,59 +234,95 @@ export default class Fight extends Component {
     return res;
   }
 
+  renderFightEnd() {
+    return (
+      <FightEnd
+        updateMode={this.props.updateMode}
+        winner={this.state.roundWinner}
+        initNextRound={this.initNextRound}
+      />
+    );
+  }
+
+  renderMessages() {
+    return (
+      <Messages
+        playerMsg={this.state.playerMsg}
+        pirateMsg={this.state.pirateMsg}
+        playerTurnType={player.turnType}
+      />
+    );
+  }
+
+  renderEndExchange() {
+    return (
+      <EndExchange
+        winner={this.state.exchangeWinner}
+        turnType={player.turnType}
+      />
+    );
+  }
+
+  renderChoices() {
+    return (
+      <Scroll>
+        <Choices
+          choices={this.state.choices}
+          updateRound={this.updateRound}
+        />
+      </Scroll>
+    );
+  }
+
+  renderInventory() {
+    return (
+      <Inventory
+        toggleInventory={this.props.toggleInventory}
+        allInsults={allInsults}
+        knownIC={player.knownIC}
+      />
+    );
+  }
+
   /**
    * @desc render Fight content or FightEnd
    * @return {Object} FightEnd component
    * @return div containing Fight content
    */
   renderContent() {
-    const gridStyles =
-      this.state.exchangeWinner !== null ?
-      {
-        gridTemplateAreas:
-          "'messages messages' 'end-exchange end-exchange' 'scroll-messages inventory'"
-      }
-      :
-        {
-          gridTemplateAreas:
-            "'messages messages' 'scroll-messages inventory'"
-        }
-      ;
-
     if (this.state.roundWinner !== null) {
-      return (<FightEnd
-        updateMode={this.props.updateMode}
-        winner={this.state.roundWinner}
-        initNextRound={this.initNextRound}
-        />);
+      this.renderFightEnd();
     } else {
       return (
-        <div className="Fight-content" style={gridStyles}>
-          <Messages
-            playerMsg={this.state.playerMsg}
-            pirateMsg={this.state.pirateMsg}
-            playerTurnType={player.turnType}
-          />
+        <div className="Fight-content">
+          <section className="Fight-Messages">
+            {this.renderMessages()}
+          </section>
 
-          {
-            this.state.exchangeWinner !== null &&
-            <EndExchange
-              winner={this.state.exchangeWinner}
-              turnType={player.turnType}
-            />
-          }
+          <section className="Fight-Exchange-Info">
+            {
+              this.state.exchangeWinner !== null ?
+              this.renderEndExchange()
+              :
+                <p>
+                  {
+                    player.turnType === 'insult'
+                    ? 'Choose an Insult'
+                    : 'Choose a Comeback'
+                  }
+                </p>
+            }
+          </section>
 
-          <Scroll>
-            <Choices
-              choices={this.state.choices}
-              updateRound={this.updateRound}
-            />
-          </Scroll>
-          <Inventory
-            toggleInventory={this.props.toggleInventory}
-            allInsults={allInsults}
-            knownIC={player.knownIC}
-          />
+          <section className="Fight-Choices">
+            {this.renderChoices()}
+          </section>
+
+          <section className="Fight-Inventory">
+            {this.renderInventory()}
+          </section>
+
+
         </div>
       )
     }

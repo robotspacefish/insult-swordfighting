@@ -11,7 +11,7 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'title',
+      mode: 'fight',
       showInstructions : false,
       fightCounter : 1,
     }
