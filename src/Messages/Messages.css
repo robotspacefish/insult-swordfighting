@@ -1,5 +1,6 @@
-#messages {
+.Messages {
   border-bottom: 1px solid white;
   min-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  grid-area: messages;
 }

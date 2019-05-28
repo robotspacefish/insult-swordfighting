@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Pair from '../Pair/Pair';
+import Scroll from '../Scroll/Scroll';
 import './Inventory.css';
 
 export default class Inventory extends Component {
@@ -13,7 +14,7 @@ export default class Inventory extends Component {
   }
 
   handleToggleInventory() {
-    this.setState(st => ({ showInventory: !st.showInstructions }));
+    this.setState(st => ({ showInventory: !st.showInventory }));
   }
 
   setInventory() {
@@ -52,13 +53,18 @@ export default class Inventory extends Component {
   render() {
     return (
       <div className="Inventory container">
-        <button id="Inventory-visibility-btn">Known Insults &amp; Comebacks<span><i className="fas fa-angle-down"></i></span></button>
-        <p className="Inventory-total-pairs">{this.getTotalPairs()} / 16 Pairs Known</p>
-        <ul className="Inventory-content">
-          {
-            this.state.inventory.map((pair, i) => <Pair  pair={pair} key={i} />)
-          }
-        </ul>
+        <div className="Inventory-always-visible">
+          <p className="Inventory-total-pairs">{this.getTotalPairs()} / 16 Pairs Known</p>
+          {/* <button id="Inventory-visibility-btn" onClick={this.handleToggleInventory}>Known Insults &amp; Comebacks<span><i className="fas fa-angle-down"></i></span></button> */}
+        </div>
+        {/* { */}
+          {/* this.state.showInventory && */}
+            <ul className="Inventory-content">
+              {
+                this.state.inventory.map((pair, i) => <Pair pair={pair} key={i} />)
+              }
+            </ul>
+        {/* } */}
       </div>
     )
   }

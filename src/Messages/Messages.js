@@ -23,7 +23,7 @@ const Messages = ({ playerMsg, pirateMsg, playerTurnType }) => {
 
   }
   return (
-    <div id="messages">
+    <div className="Messages">
       {msgs()}
     </div>
   );

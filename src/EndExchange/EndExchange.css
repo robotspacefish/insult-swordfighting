@@ -4,6 +4,7 @@
   border: 1px solid #FFA500;
   margin: 6px 0;
   font-size: 1.1em;
+  grid-area: end-exchange;
 }
 
 .EndExchange-player-win {

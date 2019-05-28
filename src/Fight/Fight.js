@@ -240,6 +240,19 @@ export default class Fight extends Component {
    * @return div containing Fight content
    */
   renderContent() {
+    const gridStyles =
+      this.state.exchangeWinner !== null ?
+      {
+        gridTemplateAreas:
+          "'messages messages' 'end-exchange end-exchange' 'scroll-messages inventory'"
+      }
+      :
+        {
+          gridTemplateAreas:
+            "'messages messages' 'scroll-messages inventory'"
+        }
+      ;
+
     if (this.state.roundWinner !== null) {
       return (<FightEnd
         updateMode={this.props.updateMode}
@@ -248,7 +261,7 @@ export default class Fight extends Component {
         />);
     } else {
       return (
-        <div className="Fight-content">
+        <div className="Fight-content" style={gridStyles}>
           <Messages
             playerMsg={this.state.playerMsg}
             pirateMsg={this.state.pirateMsg}
