@@ -304,7 +304,7 @@ export default class Fight extends Component {
               this.state.exchangeWinner !== null ?
               this.renderEndExchange()
               :
-                <p>
+                <p style={{color: 'white'}}>
                   {
                     player.turnType === 'insult'
                     ? 'Choose an Insult'
