@@ -291,7 +291,9 @@ export default class Fight extends Component {
    */
   renderContent() {
     if (this.state.roundWinner !== null) {
-      this.renderFightEnd();
+      return (
+        this.renderFightEnd()
+      );
     } else {
       return (
         <div className="Fight-content">
