@@ -4,6 +4,7 @@
   border: 4px solid #ff5d42;
   overflow-y: scroll;
   max-height: 230px;
+  cursor: default;
 }
 
 .Inventory.container {
