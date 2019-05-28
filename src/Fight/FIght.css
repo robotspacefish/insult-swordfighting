@@ -40,6 +40,10 @@
     margin: 0;
   }
 
+  .Fight .Fight-Messages {
+    margin-top: 80px;
+  }
+
   .Fight-content {
     display: grid !important;
     grid-template-columns: 60% 40%;
