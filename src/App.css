@@ -43,9 +43,9 @@ button {
 .btn {
   padding: 10px 20px;
   margin: 60px 0;
-  border-radius: 15px;
+  /* border-radius: 15px; */
   font-size: 1.2em;
-  border: 4px double #ff5d42;
+  border: 2px solid #ff5d42;
   background: none;
   color: white;
   transition: background 500ms;
