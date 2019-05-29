@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/insult-swordfighting/precache-manifest.3a79dc2a69b6e2429782f6177d03a985.js"
+  "/insult-swordfighting/precache-manifest.b86660ac54ad659830749bd13a2fee09.js"
 );
 
 workbox.clientsClaim();
