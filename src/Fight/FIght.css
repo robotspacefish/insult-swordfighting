@@ -15,11 +15,15 @@
 
 .Fight-Exchange-Info {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color : #FFA500;
   border: 1px solid #FFA500;
   margin: 6px 0;
   font-size: 1.1em;
   grid-area: exchange-info;
+  min-height: 60px;
 }
 
 .Fight-Exchange-Info p {
