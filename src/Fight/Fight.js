@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Inventory from '../Inventory/Inventory';
-import Scroll from '../Scroll/Scroll';
 import allInsults from '../assets/insults.js';
 import EndExchange from '../EndExchange/EndExchange';
 import FightEnd from '../FightEnd/FightEnd';
@@ -303,16 +302,14 @@ export default class Fight extends Component {
 
 /**
  * @desc render insults or comeback choices for the player to choose from
- * @return {Object} Scroll component with Choices component nested
+ * @return {Object} Choices component
  */
   renderChoices() {
     return (
-      <Scroll>
         <Choices
           choices={this.state.choices}
           updateRound={this.updateRound}
         />
-      </Scroll>
     );
   }
 
