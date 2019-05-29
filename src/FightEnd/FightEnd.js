@@ -7,10 +7,14 @@ export default class FightEnd extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
+
+  /**
+   * @desc handle 'Continue' button click
+   * run functions to set up the next round
+   */
   handleClick() {
     this.props.initNextRound();
     this.props.updateMode(this.props.modeToSet);
-    // TODO fadeout effect
   }
   render() {
     return (

@@ -234,6 +234,10 @@ export default class Fight extends Component {
     return res;
   }
 
+  /**
+   * @desc render FightEnd to display who won the round and start the next one
+   * @return {Object} FightEnd component
+   */
   renderFightEnd() {
     return (
       <FightEnd
@@ -244,6 +248,10 @@ export default class Fight extends Component {
     );
   }
 
+  /**
+   * @desc render the pirate and player's insult/comeback
+   * @return {Object} Messages component
+   */
   renderMessages() {
     return (
       <Messages
@@ -254,6 +262,11 @@ export default class Fight extends Component {
     );
   }
 
+/**
+ * @desc render EndExchange to display what type of turn the player is to take,
+ * or who won the exchange
+ * @return {Object} EndExchange component
+ */
   renderEndExchange() {
     return (
       <EndExchange
@@ -263,6 +276,10 @@ export default class Fight extends Component {
     );
   }
 
+/**
+ * @desc render insults or comeback choices for the player to choose from
+ * @return {Object} Scroll component with Choices component nested
+ */
   renderChoices() {
     return (
       <Scroll>
@@ -274,6 +291,10 @@ export default class Fight extends Component {
     );
   }
 
+  /**
+   * @desc render insult/comeback Inventory component
+   * @return {Object} Inventory component
+   */
   renderInventory() {
     return (
       <Inventory
