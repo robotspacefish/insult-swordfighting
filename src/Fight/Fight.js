@@ -125,8 +125,15 @@ export default class Fight extends Component {
    * @param {String} choice - user's selected insult or comeback
    */
   updateRound(choice) {
+    let roundDelay = TIMEOUT_DELAY / 2;
+
     player.msg = choice;
-    this.setState({ playerMsg : player.msg });
+    player.turnType === 'insult'
+    ? this.setState({ playerMsg: player.msg })
+      : delay(() => {
+        roundDelay = TIMEOUT_DELAY / 2 - 500
+        this.setState({ playerMsg: player.msg })
+      }, TIMEOUT_DELAY/2)
 
     const prevPirateTurnType = this.pirate.turnType;
 
@@ -139,26 +146,24 @@ export default class Fight extends Component {
     }
 
     delay(() => {
-      this.setState({ pirateMsg : this.pirate.msg });
+      this.pirate.turnType === 'comeback' &&
+        this.setState({ pirateMsg : this.pirate.msg });
 
       let winner = '';
 
       if (this.isMatch() || player.isNonsenseInsult()) {
-        console.log('draw, swap turn types')
         winner = 'draw';
         this.swapTurnTypes();
         player.roundPoints = 0;
         this.pirate.roundPoints = 0;
       } else {
         if (player.turnType === 'insult') {
-          console.log('player wins')
           winner = 'player';
           this.topSpeaker = 'Player';
           this.bottomSpeaker = 'Pirate';
           player.roundPoints++;
 
         } else {
-          console.log('pirate wins')
           winner = 'pirate';
           this.topSpeaker = 'Pirate';
           this.bottomSpeaker = 'Player';
@@ -170,7 +175,7 @@ export default class Fight extends Component {
 
       this.exchangeEnd(winner);
 
-    }, TIMEOUT_DELAY/2);
+    }, roundDelay);
   } // end updateRound() ==============================================
 
   /**
