@@ -39,6 +39,9 @@ export default class Fight extends Component {
     this.clearPrevExchangeDisplays = this.clearPrevExchangeDisplays.bind(this);
     this.props.updateFightCounter();
     this.pirate = new Pirate(this.props.round);
+
+    this.topSpeaker = 'Player';
+    this.bottomSpeaker = 'Pirate';
   }
 
   componentDidMount() {
@@ -68,6 +71,9 @@ export default class Fight extends Component {
       pirateMsg : ''
      });
 
+     this.topSpeaker = 'Player';
+     this.bottomSpeaker = 'Pirate';
+
      player.reset();
   }
 
@@ -95,7 +101,6 @@ export default class Fight extends Component {
    * winner in state
    */
   clearPrevExchangeDisplays() {
-    // TODO: BUG when a comeback is correct, the response appears above the insult
     // clear messages and choices
       console.log('clearPrevExchangeDisplays')
       const pirateMsg = player.turnType === 'comeback' ? this.pirate.msg : '';
@@ -148,30 +153,23 @@ export default class Fight extends Component {
         if (player.turnType === 'insult') {
           console.log('player wins')
           winner = 'player';
+          this.topSpeaker = 'Player';
+          this.bottomSpeaker = 'Pirate';
           player.roundPoints++;
+
         } else {
           console.log('pirate wins')
           winner = 'pirate';
+          this.topSpeaker = 'Pirate';
+          this.bottomSpeaker = 'Player';
           this.pirate.roundPoints++;
         }
       }
 
       this.addICToKnown(prevPirateTurnType);
 
-      if (this.isGameWon()) {
-        this.props.updateMode('win');
-        return;
-      } else if (this.isFightWon()) {
-        this.endRound(winner);
-        return;
-      } else {
-        this.setState({ exchangeWinner: winner });
+      this.exchangeEnd(winner);
 
-        // set up next exchange
-        this.pirate.turnType === 'insult' && this.pirate.insult();
-        delay(this.updatePlayerChoices, TIMEOUT_DELAY * 1.3);
-        delay(this.clearPrevExchangeDisplays, TIMEOUT_DELAY / 2)
-      }
     }, TIMEOUT_DELAY/2);
   } // end updateRound() ==============================================
 
@@ -199,7 +197,6 @@ export default class Fight extends Component {
       player.knownIC[type] = player.updateKnownIC(type, msg);
     }
   }
-
 
   /**
    * @desc swap turn types of player and pirate
@@ -235,6 +232,26 @@ export default class Fight extends Component {
   }
 
   /**
+   *
+   */
+  exchangeEnd(winner) {
+    if (this.isGameWon()) {
+      this.props.updateMode('win');
+      return;
+    } else if (this.isFightWon()) {
+      this.endRound(winner);
+      return;
+    } else {
+      this.setState({ exchangeWinner: winner });
+
+      // set up next exchange
+      this.pirate.turnType === 'insult' && this.pirate.insult();
+      delay(this.updatePlayerChoices, TIMEOUT_DELAY * 1.3);
+      delay(this.clearPrevExchangeDisplays, TIMEOUT_DELAY / 2)
+    }
+  }
+
+  /**
    * @desc render FightEnd to display who won the round and start the next one
    * @return {Object} FightEnd component
    */
@@ -253,11 +270,14 @@ export default class Fight extends Component {
    * @return {Object} Messages component
    */
   renderMessages() {
+    let topMsg = this.topSpeaker === 'Player' ? this.state.playerMsg : this.state.pirateMsg;
+    let bottomMsg = this.bottomSpeaker === 'Pirate' ? this.state.pirateMsg : this.state.playerMsg;
     return (
       <Messages
-        playerMsg={this.state.playerMsg}
-        pirateMsg={this.state.pirateMsg}
-        playerTurnType={player.turnType}
+        topSpeaker={this.topSpeaker}
+        topMsg={topMsg}
+        bottomSpeaker={this.bottomSpeaker}
+        bottomMsg={bottomMsg}
       />
     );
   }
