@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "090dd2007a78c8da1c8e",
-    "url": "/insult-swordfighting/static/css/main.de575f81.chunk.css"
+    "revision": "b3155a5cad45e7e5c9c6",
+    "url": "/insult-swordfighting/static/css/main.3872c9f1.chunk.css"
   },
   {
-    "revision": "090dd2007a78c8da1c8e",
-    "url": "/insult-swordfighting/static/js/main.fe9f5692.chunk.js"
+    "revision": "b3155a5cad45e7e5c9c6",
+    "url": "/insult-swordfighting/static/js/main.896b7ea6.chunk.js"
   },
   {
     "revision": "664f3908cf4c52ae6a52",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/insult-swordfighting/static/js/2.5e02d234.chunk.js"
   },
   {
-    "revision": "96b66fd9d0540f7bc5cf6571c30d134d",
+    "revision": "7a9a58722ea8fa09816d9cbc712cc8e8",
     "url": "/insult-swordfighting/index.html"
   }
 ];
