@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Messages from '../Messages/Messages';
 import Choices from '../Choices/Choices';
 import Inventory from '../Inventory/Inventory';
@@ -26,7 +26,7 @@ export default class Fight extends Component {
     super(props);
     this.state = {
       exchangeWinner: null,
-      roundWinner : null,
+      roundWinner: null,
       choices: [],
       playerMsg: '',
       pirateMsg: ''
@@ -47,9 +47,6 @@ export default class Fight extends Component {
     this.updatePlayerChoices();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-  }
-
   /**
    * @desc Create a new pirate
    * @return {Object} Pirate
@@ -64,16 +61,16 @@ export default class Fight extends Component {
   initNextRound() {
     this.initPirate();
     this.setState({
-      roundWinner : null,
-      exchangeWinner : null,
-      playerMsg : '',
-      pirateMsg : ''
-     });
+      roundWinner: null,
+      exchangeWinner: null,
+      playerMsg: '',
+      pirateMsg: ''
+    });
 
-     this.topSpeaker = 'Player';
-     this.bottomSpeaker = 'Pirate';
+    this.topSpeaker = 'Player';
+    this.bottomSpeaker = 'Pirate';
 
-     player.reset();
+    player.reset();
   }
 
   /**
@@ -82,11 +79,13 @@ export default class Fight extends Component {
    */
   isMatch() {
     const matched = allInsults.filter(i => {
-      return i[player.turnType] === player.msg && i[this.pirate.turnType] === this.pirate.msg;
+      return (
+        i[player.turnType] === player.msg &&
+        i[this.pirate.turnType] === this.pirate.msg
+      );
     });
     return matched.length > 0;
   }
-
 
   /**
    * @desc Set the player's choices in state
@@ -101,14 +100,14 @@ export default class Fight extends Component {
    */
   clearPrevExchangeDisplays() {
     // clear messages and choices
-      console.log('clearPrevExchangeDisplays')
-      const pirateMsg = player.turnType === 'comeback' ? this.pirate.msg : '';
-      this.setState({
-        pirateMsg: pirateMsg,
-        playerMsg: '',
-        choices: [],
-        exchangeWinner: null
-      })
+    console.log('clearPrevExchangeDisplays');
+    const pirateMsg = player.turnType === 'comeback' ? this.pirate.msg : '';
+    this.setState({
+      pirateMsg: pirateMsg,
+      playerMsg: '',
+      choices: [],
+      exchangeWinner: null
+    });
   }
 
   /**
@@ -128,11 +127,11 @@ export default class Fight extends Component {
 
     player.msg = choice;
     player.turnType === 'insult'
-    ? this.setState({ playerMsg: player.msg })
+      ? this.setState({ playerMsg: player.msg })
       : delay(() => {
-        roundDelay = TIMEOUT_DELAY / 2 - 500
-        this.setState({ playerMsg: player.msg })
-      }, TIMEOUT_DELAY/2)
+          roundDelay = TIMEOUT_DELAY / 2 - 500;
+          this.setState({ playerMsg: player.msg });
+        }, TIMEOUT_DELAY / 2);
 
     const prevPirateTurnType = this.pirate.turnType;
 
@@ -146,7 +145,7 @@ export default class Fight extends Component {
 
     delay(() => {
       this.pirate.turnType === 'comeback' &&
-        this.setState({ pirateMsg : this.pirate.msg });
+        this.setState({ pirateMsg: this.pirate.msg });
 
       let winner = '';
 
@@ -161,7 +160,6 @@ export default class Fight extends Component {
           this.topSpeaker = 'Player';
           this.bottomSpeaker = 'Pirate';
           player.roundPoints++;
-
         } else {
           winner = 'pirate';
           this.topSpeaker = 'Pirate';
@@ -173,7 +171,6 @@ export default class Fight extends Component {
       this.addICToKnown(prevPirateTurnType);
 
       this.exchangeEnd(winner);
-
     }, roundDelay);
   } // end updateRound() ==============================================
 
@@ -197,7 +194,7 @@ export default class Fight extends Component {
    */
   addIfUnknown(type, msg) {
     if (player.knownIC[type].indexOf(msg) === -1) {
-      console.log(`learned ${type}: ${msg}`)
+      console.log(`learned ${type}: ${msg}`);
       player.knownIC[type] = player.updateKnownIC(type, msg);
     }
   }
@@ -210,7 +207,7 @@ export default class Fight extends Component {
 
     this.pirate.turnType = player.turnType;
     player.turnType = nextTurnType;
-    console.log('swapping:', player.turnType)
+    console.log('swapping:', player.turnType);
   }
 
   /**
@@ -218,8 +215,8 @@ export default class Fight extends Component {
    * @param {String} winner - 'player' or 'pirate'
    */
   endRound(winner) {
-    console.log('endRound')
-    this.setState({ roundWinner : winner })
+    console.log('endRound');
+    this.setState({ roundWinner: winner });
   }
 
   /**
@@ -230,8 +227,9 @@ export default class Fight extends Component {
   isGameWon() {
     const len = allInsults.length;
     // + 2 and + 3 are nonsense insults/comebacks with no pair
-    let res = (player.knownIC.insults.length === len + 2)
-      && (player.knownIC.comebacks.length === len + 3)
+    let res =
+      player.knownIC.insults.length === len + 2 &&
+      player.knownIC.comebacks.length === len + 3;
     return res;
   }
 
@@ -251,7 +249,7 @@ export default class Fight extends Component {
       // set up next exchange
       this.pirate.turnType === 'insult' && this.pirate.insult();
       delay(this.updatePlayerChoices, TIMEOUT_DELAY * 1.3);
-      delay(this.clearPrevExchangeDisplays, TIMEOUT_DELAY / 2)
+      delay(this.clearPrevExchangeDisplays, TIMEOUT_DELAY / 2);
     }
   }
 
@@ -274,8 +272,14 @@ export default class Fight extends Component {
    * @return {Object} Messages component
    */
   renderMessages() {
-    let topMsg = this.topSpeaker === 'Player' ? this.state.playerMsg : this.state.pirateMsg;
-    let bottomMsg = this.bottomSpeaker === 'Pirate' ? this.state.pirateMsg : this.state.playerMsg;
+    let topMsg =
+      this.topSpeaker === 'Player'
+        ? this.state.playerMsg
+        : this.state.pirateMsg;
+    let bottomMsg =
+      this.bottomSpeaker === 'Pirate'
+        ? this.state.pirateMsg
+        : this.state.playerMsg;
     return (
       <Messages
         topSpeaker={this.topSpeaker}
@@ -286,11 +290,11 @@ export default class Fight extends Component {
     );
   }
 
-/**
- * @desc render EndExchange to display what type of turn the player is to take,
- * or who won the exchange
- * @return {Object} EndExchange component
- */
+  /**
+   * @desc render EndExchange to display what type of turn the player is to take,
+   * or who won the exchange
+   * @return {Object} EndExchange component
+   */
   renderEndExchange() {
     return (
       <EndExchange
@@ -300,16 +304,13 @@ export default class Fight extends Component {
     );
   }
 
-/**
- * @desc render insults or comeback choices for the player to choose from
- * @return {Object} Choices component
- */
+  /**
+   * @desc render insults or comeback choices for the player to choose from
+   * @return {Object} Choices component
+   */
   renderChoices() {
     return (
-        <Choices
-          choices={this.state.choices}
-          updateRound={this.updateRound}
-        />
+      <Choices choices={this.state.choices} updateRound={this.updateRound} />
     );
   }
 
@@ -334,51 +335,35 @@ export default class Fight extends Component {
    */
   renderContent() {
     if (this.state.roundWinner !== null) {
-      return (
-        this.renderFightEnd()
-      );
+      return this.renderFightEnd();
     } else {
       return (
         <div className="Fight-content">
-          <section className="Fight-Messages">
-            {this.renderMessages()}
-          </section>
+          <section className="Fight-Messages">{this.renderMessages()}</section>
 
           <section className="Fight-Exchange-Info">
-            {
-              this.state.exchangeWinner !== null ?
+            {this.state.exchangeWinner !== null ? (
               this.renderEndExchange()
-              :
-                <p style={{color: 'white'}}>
-                  {
-                    player.turnType === 'insult'
-                    ? 'Choose an Insult'
-                    : 'Choose a Comeback'
-                  }
-                </p>
-            }
+            ) : (
+              <p style={{ color: 'white' }}>
+                {player.turnType === 'insult'
+                  ? 'Choose an Insult'
+                  : 'Choose a Comeback'}
+              </p>
+            )}
           </section>
 
-          <section className="Fight-Choices">
-            {this.renderChoices()}
-          </section>
+          <section className="Fight-Choices">{this.renderChoices()}</section>
 
           <section className="Fight-Inventory">
             {this.renderInventory()}
           </section>
-
-
         </div>
-      )
+      );
     }
-
   }
 
   render() {
-    return (
-      <div className="Fight container">
-        {this.renderContent()}
-      </div>
-    )
+    return <div className="Fight container">{this.renderContent()}</div>;
   }
 }
